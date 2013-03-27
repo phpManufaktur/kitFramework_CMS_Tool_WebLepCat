@@ -1,0 +1,14 @@
+### kitFramework
+
+(c) 2013 by phpManufaktur
+Ralf Hertsch, Stockholmer Str. 31, 13359 Berlin (Germany)
+http://phpManufaktur.de - ralf.hertsch@phpManufaktur.de
+
+0.13 - 2013-03-03
+
+* added creation of the CMS base configuration
+* added creation of the Framework base configuration
+
+0.12 - 2013-02-14
+
+* initial release

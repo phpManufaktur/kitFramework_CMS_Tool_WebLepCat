@@ -1,0 +1,81 @@
+/**
+ * kitConnect
+ *
+ * @author Team phpManufaktur <team@phpmanufaktur.de>
+ * @link https://addons.phpmanufaktur.de/kitBase
+ * @copyright 2013 Ralf Hertsch <ralf.hertsch@phpmanufaktur.de>
+ * @license MIT License (MIT) http://www.opensource.org/licenses/MIT
+ */
+
+@CHARSET "ISO-8859-1";
+
+.kit_error {
+  color: #fff;
+  background-color: #992826;
+  margin: 20px 0 20px 0;
+  padding: 10px 120px 10px 10px;
+  font-size: 10px;
+  min-height: 90px;
+  background-image: url(images/bug_110x110.png);
+  background-position: top right;
+  background-repeat: no-repeat;
+}
+.kit_error a:link,
+.kit_error a:visited {
+  text-decoration: none;
+  color: #ffff00; 
+  background-color: transparent;
+}
+.kit_error a:hover,
+.kit_error a:active {
+  text-decoration: underline;
+  color: #ffff00;
+  background-color: transparent;
+}
+.kit_error_support {
+  margin: 20px 0 0 0;
+}
+
+/**
+  KIT2
+**/
+.kit2_text {
+  font-weight: bold;
+  color: #000;
+  background-color: transparent;
+}
+.kit2_sub {
+  font-size: smaller;
+  color: #da251d;
+  background-color: transparent;
+}
+
+.kit_setup {
+  margin: 0;
+  padding: 20px 10px 30px 10px;
+}
+.kit_setup p {
+  margin: 0;
+  padding: 0 0 10px 0;
+}
+.kit_setup_logo {
+  float:left;
+  width: 250px;
+  height: auto;
+  text-align: left;
+}
+.kit_setup_mailer {
+  float: left;
+  width: 150px;
+  height: 200px;
+  text-align: left;
+}
+.kit_setup_info {
+  margin: 0;
+  padding: 15px 0 0 0;
+}
+.kit_clear {
+  clear: both;
+  width: 1px;
+  height: 1px;
+}

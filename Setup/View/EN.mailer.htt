@@ -1,0 +1,12 @@
+<div class="kit_setup">
+  <div class="kit_setup_mailer">
+    <img src="{{ img_source }}" width="100" height="100" alt="Sending E-Mails" />
+  </div>
+  <div class="kit_setup_info">
+    <p><b>kitFramework</b> cannot proceed the setup because the email settings of the CMS are not valid.</p>
+    <p>The <b>kitFramework</b> need proper configured <b>SMTP</b> settings. Actually you have choosen <b>PHP MAIL</b> as routine for sending out emails. This routine is very insecure and most email server will reject received emails as spam.</p>
+    <p>Please check the email settings and then try again to install the kitFramework</p>
+    <p><input type="button" value="Goto CMS settings" onclick="javascript:window.location='{{ settings_url }}';" /></p>
+  </div>
+  <div class="kit_clear"></div>
+</div>

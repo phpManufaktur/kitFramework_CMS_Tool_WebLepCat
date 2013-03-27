@@ -1,0 +1,12 @@
+<div class="kit_setup">
+  <div class="kit_setup_logo">
+    <img src="{{ logo_source }}" width="200" height="175" alt="KIT2" />
+  </div>
+  <div class="kit_setup_info">
+    <p>Dieses Admin-Tool verbindet Ihr Content Management System mit dem kitFramework und stellt Ihnen zusätzliche Anwendungsprogramme sowie Hilfsmittel zur Verfügung.</p>
+    <p>Anwendungen des kitFramework lassen sich ganz einfach per Klick installieren und wieder entfernen.</p>
+    <p>Das Framework selbst ist recht umfangreich und wird deshalb direkt von GitHub heruntergeladen, entpackt und installiert - der gesamte Vorgang wird nur wenige Augenblicke in Anspruch nehmen.</p>
+    <p><input type="button" value="Framework installieren" onclick="javascript:window.location='{{ setup_url }}';" /></p>
+  </div>
+  <div class="kit_clear"></div>
+</div>
