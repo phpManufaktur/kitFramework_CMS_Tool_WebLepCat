@@ -4,6 +4,10 @@
 Ralf Hertsch, Stockholmer Str. 31, 13359 Berlin (Germany)
 http://phpManufaktur.de - ralf.hertsch@phpManufaktur.de
 
+0.15 - 2013-03-28
+
+* added output filter to enable usage of kitCommands
+
 0.13 - 2013-03-03
 
 * added creation of the CMS base configuration

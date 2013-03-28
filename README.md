@@ -1,7 +1,7 @@
 ### kitFramework for WebsiteBaker & LEPTON CMS
 
 Admin-Tool for the Content Management Systems [WebsiteBaker](http://websitebaker2.org) and [LEPTON CMS](http://lepton-cms.org) witch enables you to directly access the kitFramework and extend your CMS with tools and applications developed for the kitFramework.
-
+ 
 The Tool itself is small and handy, will download the more fat ( ~ 10 MBytes ) kitFramework directly from GitHub, unzip and install it.
 
 #### Requirements

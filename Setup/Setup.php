@@ -267,6 +267,105 @@ class Setup {
 	} // updateFrameworkConfiguration()
 
 	/**
+	 * Check if the WebsiteBaker output filter is already patched
+	 *
+	 * @param string $filter_path
+	 * @return boolean
+	 */
+	protected function websiteBakerIsPatched($filter_path) {
+	    if (file_exists($filter_path)) {
+	        $lines = file($filter_path);
+	        foreach ($lines as $line)
+	        if (strpos($line, "kitFramework") > 0) return true;
+	    }
+	    return false;
+	} // websiteBakerIsPatched()
+
+	/**
+	 * Patch the WebsiteBaker output filter
+	 *
+	 * @param string $filter_path
+	 * @return boolean
+	 */
+	protected function websiteBakerDoPatch($filter_path) {
+	    $returnvalue = false;
+	    $tempfile = WB_PATH .'/modules/output_filter/new_filter.php';
+	    $backup = WB_PATH .'/modules/output_filter/original-kitframework-filter-routines.php';
+
+	    $addline = "\n\n\t\t// exec kitFramework filter";
+	    $addline .= "\n\t\tif (file_exists(WB_PATH .'/modules/kit_framework/Filter/outputFilter.php')) { ";
+	    $addline .= "\n\t\t\trequire_once (WB_PATH .'/modules/kit_framework/Filter/outputFilter.php'); ";
+	    $addline .= "\n\t\t\t".'$cmsOutputFilter = new \phpManufaktur\Filter\outputFilter(); ';
+	    $addline .= "\n\t\t\t".'$content = $cmsOutputFilter->exec($content); ';
+	    $addline .= "\n\t\t}\n\n ";
+
+	    if (file_exists($filter_path)) {
+	        $lines = file ($filter_path);
+	        $handle = fopen ($tempfile, 'w');
+	        foreach ($lines as $line) {
+	            fwrite ($handle, $line);
+	            // check for both indicators of WB 2.8.1 up to wb 2.8.3
+	            if ((strpos($line, "define('OUTPUT_FILTER_DOT_REPLACEMENT'") > 0) ||
+	            (strpos($line, 'function filter_frontend_output($content)') > 0)) {
+	                $returnvalue = true;
+	                fwrite($handle, $addline);
+	            }
+	        }
+	        fclose ($handle);
+	        if (rename($filter_path, $backup)) {
+	            if (rename($tempfile, $filter_path)) {
+	                return $returnvalue;
+	            }
+	            else {
+	                return false;
+	            }
+	        }
+	    }
+	    return false;
+	}
+
+	/**
+	 * Add the output filter for the kitFramework
+	 *
+	 * @return boolean
+	 */
+	protected function addFilter() {
+	    if (defined('LEPTON_VERSION')) {
+	        // register the filter at LEPTON outputInterface
+	        if (!file_exists(WB_PATH .'/modules/output_interface/output_interface.php')) {
+	            throw new \Exception('Missing LEPTON outputInterface, can\'t register the kitFramework filter - installation is not complete!');
+	        }
+	        else {
+	            if (!function_exists('register_output_filter'))
+	                include_once(WB_PATH .'/modules/output_interface/output_interface.php');
+	            register_output_filter('kit_framework', 'kitFramework');
+	        }
+	    }
+	    else {
+	        if (version_compare(WB_VERSION, '2.8.3', '>=')) {
+	            // WebsiteBaker 2.8.3
+	            $filter_path = WB_PATH.'/modules/output_filter/index.php';
+	        }
+	        else {
+	            // all other WebsiteBaker versions
+	            $filter_path = WB_PATH .'/modules/output_filter/filter-routines.php';
+	        }
+	        if (file_exists($filter_path)) {
+	            if (!$this->websiteBakerIsPatched($filter_path)) {
+	                if (!$this->websiteBakerDoPatch($filter_path)) {
+	                    throw new \Exception('Failed to patch the WebsiteBaker output filter, please contact the support!');
+	                }
+	            }
+	        }
+	        else {
+	            throw new \Exception('Can\'t detect the correct method to patch the output filter, please contact the support!');
+	        }
+	    }
+	    return true;
+	} // addFilter()
+
+
+	/**
 	 * Execute the Setup, download kitFramework, unzip and start the framework
 	 *
 	 * @throws \Exception
@@ -377,6 +476,9 @@ class Setup {
 
     // create directory protection
     $this->createProtection(WB_PATH.'/kit2/media/protected');
+
+    // add the output filter for the framework
+    $this->addFilter();
 
 	} // exec()
 
