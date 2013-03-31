@@ -56,7 +56,7 @@ class outputFilter {
                 'params' => $params
             );
             ob_start();
-            $kitCommand = WB_URL.'/kit2/command/'.$command.'/'.base64_encode(json_encode($cmd_array));
+            $kitCommand = WB_URL.'/kit2/kit_command/'.$command.'/'.base64_encode(json_encode($cmd_array));
             $ch = curl_init();
             curl_setopt($ch,CURLOPT_URL, $kitCommand);
             $result = curl_exec($ch);
