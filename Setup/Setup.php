@@ -293,7 +293,7 @@ class Setup
         $addline = "\n\n\t\t// exec kitFramework filter";
         $addline .= "\n\t\tif (file_exists(WB_PATH .'/modules/kit_framework/Filter/outputFilter.php')) { ";
         $addline .= "\n\t\t\trequire_once (WB_PATH .'/modules/kit_framework/Filter/outputFilter.php'); ";
-        $addline .= "\n\t\t\t" . '$cmsOutputFilter = new \phpManufaktur\Filter\outputFilter(); ';
+        $addline .= "\n\t\t\t" . '$cmsOutputFilter = new \phpManufaktur\kitFramework\Filter\outputFilter(); ';
         $addline .= "\n\t\t\t" . '$content = $cmsOutputFilter->exec($content); ';
         $addline .= "\n\t\t}\n\n ";
 
@@ -551,6 +551,9 @@ class Setup
     {
         // download and config the kitFramework
         $this->downloadAndConfigTheFramework();
+
+        // download and config the Basic extension
+        $this->downloadAndConfigTheBasicExtension();
 
         // add the output filter for the framework
         $this->addFilter();
