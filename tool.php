@@ -74,7 +74,6 @@ class Tool {
 		}
 		else {
 			// nothing else to do, so we call the kitFramework
-			//header("Location: ".WB_URL.'/modules/kit_framework/kit2.php');
 	    global $database;
 
         if (null === ($pwd = $database->get_one("SELECT `password` FROM `".TABLE_PREFIX."users` WHERE `username`='".$_SESSION['USERNAME']."'", MYSQL_ASSOC)))
