@@ -1,7 +1,7 @@
 <?php
 
 /**
- * kitFramework
+ * kitFramework for WebsiteBaker
  *
  * @author Team phpManufaktur <team@phpmanufaktur.de>
  * @link https://addons.phpmanufaktur.de/kitBase
@@ -53,6 +53,7 @@ class outputFilter {
                 ),
                 'GET' => $_GET,
                 'POST' => $_POST,
+                'SESSION' => $_SESSION,
                 'params' => $params
             );
             ob_start();
