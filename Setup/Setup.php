@@ -1,7 +1,7 @@
 <?php
 
 /**
- * kitFramework
+ * kitFramework::Basic
  *
  * @author Team phpManufaktur <team@phpmanufaktur.de>
  * @link https://addons.phpmanufaktur.de/kitEvent

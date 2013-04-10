@@ -100,7 +100,7 @@ return <<<EOD
             <img src="$expand_img" width="10" height="10" alt="Open in kitFramework" title="Open in kitFramework" />
         </a>
     </div>
-    <iframe id="kf_iframe" width="100%" height="700" src="$iframe_source" frameborder="0" style="border: 1px solid #ccc;">
+    <iframe id="kitframework_iframe" width="100%" height="700" src="$iframe_source" frameborder="0" style="border: 1px solid #ccc;">
         <p>Sorry, but your browser does not support embedded frames!</p>
     </iframe>
     <div style="font-size:10px;text-align:right;margin:2px 0 0 0;padding:0;">
