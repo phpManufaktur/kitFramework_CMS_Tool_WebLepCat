@@ -96,8 +96,9 @@ class Setup
             // close the connection
             curl_close($ch);
 
-            if (isset($info['http_code']) && ($info['http_code'] != '200'))
+            if (isset($info['http_code']) && ($info['http_code'] != '200')) {
                 return false;
+            }
 
                 // create the target file
             if (false === ($downloaded_file = fopen($target_path, 'w')))

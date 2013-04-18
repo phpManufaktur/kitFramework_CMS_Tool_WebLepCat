@@ -219,7 +219,7 @@ class outputFilter {
             // explode the string into an array by spaces
             $command_array = explode(' ', $command_string);
             // the first match is the command!
-            $command = strtolower(trim($command_array[0]));
+            $command = strtolower(trim(strip_tags($command_array[0])));
             // delete the command from array
             unset($command_array[0]);
             // get the parameter string
@@ -234,9 +234,9 @@ class outputFilter {
                 // no pair? continue!
                 if (count($parameter_pair) != 2) continue;
                 // separate the key
-                $key = strtolower(trim($parameter_pair[0]));
+                $key = strtolower(trim(strip_tags($parameter_pair[0])));
                 // separate the value
-                $value = trim(substr($parameter_pair[1], 0, strrpos($parameter_pair[1], ']')));
+                $value = trim(strip_tags(substr($parameter_pair[1], 0, strrpos($parameter_pair[1], ']'))));
                 // add to the params array
                 $params[$key] = $value;
                 if (($key == 'css') || ($key == 'js')) {
