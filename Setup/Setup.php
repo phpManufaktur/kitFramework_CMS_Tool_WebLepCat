@@ -100,13 +100,13 @@ class Setup
                 return false;
             }
 
-                // create the target file
-            if (false === ($downloaded_file = fopen($target_path, 'w')))
+            // create the target file
+            if (false === ($downloaded_file = @fopen($target_path, 'w')))
                 throw new \Exception('fopen() fails!');
-                // write the content to the target file
+            // write the content to the target file
             if (false === ($bytes = fwrite($downloaded_file, $file_content)))
                 throw new \Exception('fwrite() fails!');
-                // close the target file
+            // close the target file
             fclose($downloaded_file);
         } catch (\Exception $e) {
             throw new \Exception($e->getMessage());
@@ -368,6 +368,13 @@ class Setup
         self::$zip_target_name = 'kitFramework.zip';
         self::$zip_target_path = WB_PATH . '/temp/unzip';
 
+        if (!file_exists(self::$zip_target_path)) {
+            if (!mkdir(self::$zip_target_path, 0777, true)) {
+                throw new \Exception($this->app['translator']->trans("Can not create the directory %directory%!",
+                    array('%directory%' => '/temp/unzip')));
+            }
+        }
+
         // clean up the temporary directory
         @array_map('unlink', glob(WB_PATH . '/temp/unzip/*'));
 
@@ -542,6 +549,75 @@ class Setup
         @array_map('unlink', glob(WB_PATH . '/temp/unzip/*'));
 
     } // downloadAndConfigTheBasicExtension()
+
+    public static function xcopy($src,$dest)
+    {
+        foreach  (scandir($src) as $file) {
+            if (!is_readable($src.'/'.$file)) continue;
+            if (is_dir($file) && ($file!='.') && ($file!='..') ) {
+                @mkdir($dest . '/' . $file);
+                self::xcopy($src.'/'.$file, $dest.'/'.$file);
+            }
+            else {
+                @copy($src.'/'.$file, $dest.'/'.$file);
+            }
+        }
+    }
+
+    public static function checkSearch()
+    {
+        global $database;
+
+        if (!file_exists(WB_PATH.'/modules/kit_framework_search')) {
+            // create the directory
+            if (!mkdir(WB_PATH.'/modules/kit_framework_search', 0777, true))
+                throw new \Exception('Can not create the directory /modules/kit_framework_search');
+            try {
+                self::xcopy(WB_PATH.'/modules/kit_framework/Search', WB_PATH.'/modules/kit_framework_search');
+            }
+            catch (\Exception $e) {
+                throw new \Exception($e->getMessage());
+            }
+        }
+
+        // check the addons table
+        include_once(WB_PATH.'/modules/kit_framework/Search/info.php');
+        $SQL = "SELECT `name` FROM `".TABLE_PREFIX."addons` WHERE `directory`='kit_framework_search'";
+        if (null == ($name = $database->get_one($SQL))) {
+            if ($database->is_error())
+                throw new \Exception($database->get_error());
+            // add the search function to the addons table
+            $SQL = "INSERT INTO `".TABLE_PREFIX."addons` (`type`,`directory`,`name`,`description`,`function`,`version`,`platform`,`author`,`license`)".
+                " VALUES ('module','$module_directory','$module_name','$module_description','$module_function','$module_version','$module_platform',".
+                "'$module_author','$module_license')";
+            if (null == $database->query($SQL))
+                throw new \Exception($database->get_error());
+        }
+
+        // check if kit_framework_search is added as section
+        $SQL = "SELECT `section_id` FROM `".TABLE_PREFIX."sections`, `".TABLE_PREFIX."pages` WHERE `module`='kit_framework_search' AND `visibility`='public'";
+        if (null == ($query = $database->query($SQL))) {
+            throw new \Exception($database->get_error());
+        }
+
+        if ($query->numRows() < 1) {
+            // we have to insert a section with the search function
+            $SQL = "SELECT `page_id` FROM `".TABLE_PREFIX."pages` WHERE `visibility`='public'";
+            if (null == ($page_id = $database->get_one($SQL, MYSQL_ASSOC)))
+                throw new \Exception($database->get_error());
+            // get the position of the last section
+            $SQL = "SELECT `position` FROM `".TABLE_PREFIX."sections` WHERE `page_id`='$page_id' ORDER BY `position` DESC LIMIT 1";
+            if (null == ($position = $database->get_one($SQL, MYSQL_ASSOC)))
+                throw new \Exception($database->get_error());
+            // insert a new section for droplets_extension
+            $position++;
+            $SQL = "INSERT INTO `".TABLE_PREFIX."sections` (`block`,`publ_end`,`publ_start`,`module`,`page_id`,`position`) ".
+                "VALUES ('1','0','0','kit_framework_search','$page_id','$position')";
+            if (null == $database->query($SQL))
+                throw new \Exception($database->get_error());
+        }
+    }
+
 
     /**
      * Execute the Setup, download kitFramework, unzip and start the framework

@@ -76,6 +76,9 @@ class Tool {
 			// nothing else to do, so we call the kitFramework
 	    global $database;
 
+	    // check the search function
+	    Setup::checkSearch();
+
         if (null === ($pwd = $database->get_one("SELECT `password` FROM `".TABLE_PREFIX."users` WHERE `username`='".$_SESSION['USERNAME']."'", MYSQL_ASSOC)))
             throw new Exception($database->get_error());
 

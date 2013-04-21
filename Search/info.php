@@ -1,7 +1,7 @@
 <?php
 
 /**
- * kitFramework
+ * kitFrameworkSearch
  *
  * @author Team phpManufaktur <team@phpmanufaktur.de>
  * @link https://addons.phpmanufaktur.de/kitBase
@@ -12,14 +12,14 @@
 if (!defined('WB_PATH'))
 	exit('Can\'t access this file directly!');
 
-$module_directory     = 'kit_framework';
-$module_name          = 'kitFramework';
-$module_function      = 'tool';
-$module_version       = '0.15';
+$module_directory     = 'kit_framework_search';
+$module_name          = 'kitFrameworkSearch';
+$module_function      = 'page';
+$module_version       = '0.10';
 $module_status        = 'Beta';
 $module_platform      = '2.8';
 $module_author        = 'Ralf Hertsch, Berlin (Germany)';
 $module_license       = 'MIT License (MIT)';
-$module_description   = 'Connect your Content Management System (CMS) with the kitFramework and give you access to additional applications and tools';
+$module_description   = 'Extend the kitFramework with a search function for embedded kitCommands';
 $module_home          = 'https://kit2.phpmanufaktur.de';
-$module_guid          = 'E699A9B6-40A3-4215-8875-1658DAD960C4';
+$module_guid          = '56DFD785-9B2C-43EE-92E1-13C1F155E29D';
