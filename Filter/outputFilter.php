@@ -20,7 +20,7 @@ class outputFilter {
      * @param integer $page_id
      * @return boolean|string
      */
-    protected function getURLbyPageID($page_id) {
+    public static function getURLbyPageID($page_id) {
         global $database;
 
         if (defined('TOPIC_ID')) {
@@ -252,18 +252,22 @@ class outputFilter {
                     'url' => WB_URL,
                     'path' => WB_PATH,
                     'page_id' => PAGE_ID,
-                    'page_url' => $this->getURLbyPageID(PAGE_ID)
+                    'page_url' => $this->getURLbyPageID(PAGE_ID),
+                    'user' => array(
+                        'id' => (isset($_SESSION['USER_ID'])) ? $_SESSION['USER_ID'] : -1,
+                        'name' => (isset($_SESSION['USERNAME'])) ? $_SESSION['USERNAME'] : '',
+                        'email' => (isset($_SESSION['EMAIL'])) ? $_SESSION['EMAIL'] : ''
+                    )
                 ),
                 'GET' => $_GET,
                 'POST' => $_POST,
-                'SESSION' => $_SESSION,
                 'params' => $params
             );
             ob_start();
             $kitCommand = WB_URL.'/kit2/kit_command/'.$command.'/'.base64_encode(json_encode($cmd_array));
             $ch = curl_init();
             curl_setopt($ch,CURLOPT_URL, $kitCommand);
-            $result = curl_exec($ch);
+            curl_exec($ch);
             curl_close($ch);
             $response = ob_get_clean();
             $content = str_replace($command_expression, $response, $content);
