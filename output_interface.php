@@ -9,8 +9,6 @@
  * @license MIT License (MIT) http://www.opensource.org/licenses/MIT
  */
 
-//namespace phpManufaktur;
-
 use phpManufaktur\kitFramework\Filter\outputFilter;
 
 require_once WB_PATH.'/modules/kit_framework/Filter/outputFilter.php';
