@@ -29,6 +29,8 @@ class Setup
     protected static $zip_target_path = null;
     protected static $zip_target_name = null;
 
+    const USERAGENT = 'kitFramework::Interface';
+
     public function __construct ()
     {
         // init the GitHub interface
@@ -86,6 +88,7 @@ class Setup
             curl_setopt($ch, CURLOPT_FAILONERROR, true);
             curl_setopt($ch, CURLOPT_AUTOREFERER, true);
             curl_setopt($ch, CURLOPT_TIMEOUT, 1000);
+            curl_setopt($ch, CURLOPT_USERAGENT, self::USERAGENT);
             // exec cURL and get the file content
             if (false === ($file_content = curl_exec($ch))) {
                 throw new \Exception(sprintf('cURL Error: [%d] - %s', curl_errno($ch), curl_error($ch)));
