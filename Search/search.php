@@ -56,7 +56,7 @@ function kit_framework_search_search($search)
 {
     global $database;
 
-    $SQL = "SELECT `section_id`, `page_id`, `content` FROM `".TABLE_PREFIX."mod_wysiwyg` WHERE `content` LIKE '%~~%search%~~%'";
+    $SQL = "SELECT `section_id`, `page_id`, `content` FROM `".TABLE_PREFIX."mod_wysiwyg` WHERE `content` LIKE '%~~%search[]%~~%'";
     if (null == ($query = $database->query($SQL)))
         throw new \Exception($database->get_error());
 
