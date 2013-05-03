@@ -167,21 +167,21 @@ class outputFilter {
             if ($count == 0) {
                 if (empty($value)) {
                     // assume that the directory is equal to the command
-                    $this->load_css_file($content, $command, 'screen.css', 'default');
+                    return $this->load_css_file($content, $command, 'screen.css', 'default');
                 }
                 else {
                     // directory is given, all other values are default
-                    $this->load_css_file($content, strtolower(trim($value)), 'screen.css', 'default');
+                    return $this->load_css_file($content, strtolower(trim($value)), 'screen.css', 'default');
                 }
             }
             elseif ($count == 1) {
                 list($directory, $css_file) = explode(',', strtolower($value));
-                $this->load_css_file($content, trim($directory), trim($css_file), 'default');
+                return $this->load_css_file($content, trim($directory), trim($css_file), 'default');
             }
             elseif ($count == 2) {
                 // three parameters
                 list($directory, $css_file, $template) = explode(',', strtolower($value));
-                $this->load_css_file($content, trim($directory), trim($css_file), trim($template));
+                return $this->load_css_file($content, trim($directory), trim($css_file), trim($template));
             }
         }
         elseif ($type == 'js') {
@@ -189,12 +189,12 @@ class outputFilter {
             if ($count == 1) {
                 // two parameters, split into directory and JS file
                 list($directory, $js_file) = explode(',', strtolower($value));
-                $this->load_js_file($content, trim($directory), trim($js_file), 'default');
+                return $this->load_js_file($content, trim($directory), trim($js_file), 'default');
             }
             elseif ($count == 2) {
                 // three parameters, split into directory, JS file and template
                 list($directory, $js_file, $template) = explode(',', strtolower($value));
-                $this->load_js_file($content, trim($directory), trim($js_file), trim($template));
+                return $this->load_js_file($content, trim($directory), trim($js_file), trim($template));
             }
         }
     }
@@ -225,6 +225,7 @@ class outputFilter {
             // get the parameter string
             $parameter_string = implode(' ', $command_array);
             $params = array();
+            $css_loaded = false;
             // now we search for the parameters
             preg_match_all('/([a-z,A-Z,0-9,_]{2,32}([ ]){0,2}\[)(.*?)(])/', $parameter_string, $parameter_matches, PREG_SET_ORDER);
             // loop through the parameters
@@ -241,8 +242,14 @@ class outputFilter {
                 $params[$key] = $value;
                 if (($key == 'css') || ($key == 'js')) {
                     // we have to load an additional CSS file
-                    $this->checkLoadFile($content, $command, $key, $value);
+                    if ($this->checkLoadFile($content, $command, $key, $value) && ($key == 'css')) {
+                        $css_loaded = true;
+                    }
                 }
+            }
+            if (!$css_loaded) {
+                // load the kitCommand default CSS file
+                $this->load_css_file($content, 'basic', '/css/kitcommand.css', 'default');
             }
             $cmd_array = array(
                 'cms' => array(
