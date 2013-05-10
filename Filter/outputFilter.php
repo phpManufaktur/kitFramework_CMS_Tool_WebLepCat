@@ -14,6 +14,29 @@ namespace phpManufaktur\kitFramework\Filter;
 class outputFilter {
 
     /**
+     * Get the version number of the outputFilter by reading the info.php
+     * of the add-on
+     *
+     * @return boolean|number
+     */
+    public function getVersion() {
+        // read info.php into array
+        if (false === ($info_text = file(WB_PATH.'/modules/'.basename(dirname(__FILE__)).'/info.php'))) {
+            return false;
+        }
+        // walk through array
+        foreach ($info_text as $item) {
+            if (strpos($item, '$module_version') !== false) {
+                // split string $module_version
+                $value = explode('=', $item);
+                // return floatval
+                return floatval(preg_replace('([\'";,\(\)[:space:][:alpha:]])', '', $value[1]));
+            }
+        }
+        return false;
+    } // getVersion()
+
+    /**
      * Get the URL of the submitted PAGE_ID - check for special pages like
      * TOPICS and/or NEWS and return the URL of the TOPIC/NEW page if active
      *
@@ -268,16 +291,39 @@ class outputFilter {
                 ),
                 'GET' => $_GET,
                 'POST' => $_POST,
-                'params' => $params
+                'parameter' => $params,
             );
-            ob_start();
-            $kitCommand = WB_URL.'/kit2/kit_command/'.$command.'/'.base64_encode(json_encode($cmd_array));
+            $kit_filter = false;
+            $command_url = WB_URL.'/kit2/kit_command/'.$command;
+            if ((false !== ($pos = strpos($command, 'filter:'))) && ($pos == 0)) {
+                $kit_filter = true;
+                $command = trim(substr($command, strlen('filter:')));
+                $cmd_array['content'] = $content;
+                $cmd_array['filter_expression'] = $command_expression;
+                $command_url = WB_URL.'/kit2/kit_filter/'.$command;
+            }
+            $options = array(
+                CURLOPT_POST => true,
+                CURLOPT_HEADER => false,
+                CURLOPT_URL => $command_url,
+                CURLOPT_FRESH_CONNECT => true,
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_FORBID_REUSE => true,
+                CURLOPT_TIMEOUT => 4,
+                CURLOPT_POSTFIELDS => http_build_query(array('cms_parameter' => $cmd_array))
+            );
             $ch = curl_init();
-            curl_setopt($ch,CURLOPT_URL, $kitCommand);
-            curl_exec($ch);
+            curl_setopt_array($ch, $options);
+            if (!$response = curl_exec($ch)) {
+                trigger_error(curl_error($ch));
+            }
             curl_close($ch);
-            $response = ob_get_clean();
-            $content = str_replace($command_expression, $response, $content);
+            if ($kit_filter) {
+                $content = $response;
+            }
+            else {
+                $content = str_replace($command_expression, $response, $content);
+            }
         }
         return $content;
     }
