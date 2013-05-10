@@ -4,6 +4,12 @@
 Ralf Hertsch, Stockholmer Str. 31, 13359 Berlin (Germany)
 http://phpManufaktur.de - ralf.hertsch@phpManufaktur.de
 
+0.20 - 2013-05-10
+
+* added getVersion to outputFilter
+* changed parameter handling in outputFilter to POST
+* added FILTER handling to outputFilter
+
 0.19 - 2013-05-02
 
 * added User Agent (UA) for GitHub access
