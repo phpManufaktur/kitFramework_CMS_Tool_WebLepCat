@@ -314,7 +314,7 @@ class outputFilter {
             );
             $ch = curl_init();
             curl_setopt_array($ch, $options);
-            if (!$response = curl_exec($ch)) {
+            if (false === ($response = curl_exec($ch))) {
                 trigger_error(curl_error($ch));
             }
             curl_close($ch);

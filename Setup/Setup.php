@@ -606,7 +606,7 @@ class Setup
         if ($query->numRows() < 1) {
             // we have to insert a section with the search function
             $SQL = "SELECT `page_id` FROM `".TABLE_PREFIX."pages` WHERE `visibility`='public'";
-            if (null == ($page_id = $database->get_one($SQL, MYSQL_ASSOC)))
+            if (null === ($page_id = $database->get_one($SQL, MYSQL_ASSOC)))
                 throw new \Exception($database->get_error());
             // get the position of the last section
             $SQL = "SELECT `position` FROM `".TABLE_PREFIX."sections` WHERE `page_id`='$page_id' ORDER BY `position` DESC LIMIT 1";
