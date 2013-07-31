@@ -12,13 +12,13 @@
 if (!defined('WB_PATH'))
 	exit('Can\'t access this file directly!');
 
-$url_status = (ini_get('allow_url_fopen') == 1);
-$curl_status = function_exists('curl_init');
+$url_status = true; (ini_get('allow_url_fopen') == 1);
+$curl_status = true; function_exists('curl_init');
 $version_check = (version_compare(PHP_VERSION, '5.3.3') < 0) ? false : true;
-$apache_installed = ($_SERVER['SERVER_SOFTWARE'] === 'Apache');
-$nix_system = (strtoupper(substr(PHP_OS, 0, 3)) !== 'WIN');
+$server_software = explode('/', $_SERVER['SERVER_SOFTWARE']);
+$apache_installed = (strtoupper(substr($_SERVER['SERVER_SOFTWARE'], 0, 6)) == 'APACHE');
 
-if (!$version_check || !$url_status || !$curl_status || !$apache_installed || !$nix_system) {
+if (!$version_check || !$url_status || !$curl_status || !$apache_installed) {
 	$required =
   $PRECHECK['CUSTOM_CHECKS'] = array(
       'Server configuration' => array(
