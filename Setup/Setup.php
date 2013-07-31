@@ -89,7 +89,9 @@ class Setup
             curl_setopt($ch, CURLOPT_AUTOREFERER, true);
             curl_setopt($ch, CURLOPT_TIMEOUT, 1000);
             curl_setopt($ch, CURLOPT_USERAGENT, self::USERAGENT);
-            // exec cURL and get the file content
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+		        // exec cURL and get the file content
             if (false === ($file_content = curl_exec($ch))) {
                 throw new \Exception(sprintf('cURL Error: [%d] - %s', curl_errno($ch), curl_error($ch)));
             }
@@ -283,6 +285,46 @@ class Setup
     } // websiteBakerIsPatched()
 
     /**
+     * fixes a path by removing //, /../ and other things
+     *
+     * @access public
+     * @param string $path to fix
+     * @return string
+     *
+     */
+    public static function sanitizePath ($path)
+    {
+        // remove / at end of string; this will make sanitizePath fail otherwise!
+        $path = preg_replace('~/{1,}$~', '', $path);
+
+        // make all slashes forward
+        $path = str_replace('\\', '/', $path);
+
+        // bla/./bloo ==> bla/bloo
+        $path = preg_replace('~/\./~', '/', $path);
+
+        // resolve /../
+        // loop through all the parts, popping whenever there's a .., pushing otherwise.
+        $parts = array();
+        foreach (explode('/', preg_replace('~/+~', '/', $path)) as $part) {
+        if ($part === ".." || $part == '') {
+        array_pop($parts);
+        } elseif ($part != "") {
+        $parts[] = $part;
+        }
+        }
+
+        $new_path = implode("/", $parts);
+
+        // windows
+        if (! preg_match('/^[a-z]\:/i', $new_path)) {
+        $new_path = '/' . $new_path;
+    }
+
+    return $new_path;
+    } // sanitizePath()
+
+    /**
      * Patch the WebsiteBaker output filter
      *
      * @param string $filter_path
@@ -361,6 +403,7 @@ class Setup
         return true;
     } // addFilter()
 
+
     /**
      * Download and configure the kitFramework
      *
@@ -369,7 +412,7 @@ class Setup
     protected function downloadAndConfigTheFramework()
     {
         self::$zip_target_name = 'kitFramework.zip';
-        self::$zip_target_path = WB_PATH . '/temp/unzip';
+        self::$zip_target_path = self::sanitizePath(WB_PATH . '/temp/unzip');
 
         if (!file_exists(self::$zip_target_path)) {
             if (!mkdir(self::$zip_target_path, 0777, true)) {
@@ -379,7 +422,7 @@ class Setup
         }
 
         // clean up the temporary directory
-        @array_map('unlink', glob(WB_PATH . '/temp/unzip/*'));
+        @array_map('unlink', glob(self::sanitizePath(WB_PATH . '/temp/unzip/*')));
 
         // get the kitFramework with CURL
         $info = array();
@@ -398,8 +441,8 @@ class Setup
         $unzip = new unZip();
 
         // create target directory
-        $unzip->checkDirectory(WB_PATH . '/temp/unzip/kit2');
-        $unzip->setUnZipPath(WB_PATH . '/temp/unzip/kit2');
+        $unzip->checkDirectory(self::sanitizePath(WB_PATH . '/temp/unzip/kit2'));
+        $unzip->setUnZipPath(self::sanitizePath(WB_PATH . '/temp/unzip/kit2'));
 
         $unzip->extract(self::$zip_target_path . '/' . self::$zip_target_name);
 
@@ -421,13 +464,19 @@ class Setup
             throw new \Exception('The unzipped archive has an unexpected structure, please contact the support!');
 
         // create the directory for the kitFramework
-        if (! mkdir(WB_PATH . '/kit2'))
+        if (!mkdir(WB_PATH . '/kit2'))
             throw new \Exception("Can't create the target directory for the KIT framework!");
 
         // move all files from the temporary directory to the target
-        if (! rename($source_dir, WB_PATH . '/kit2'))
-            throw new \Exception("Can't move the unzipped framework to the target directory!");
-
+        if (strtoupper(substr(PHP_OS, 0, 3)) !== 'WIN') {
+            // linux only: just rename
+            if (!rename(self::sanitizePath($source_dir), self::sanitizePath(WB_PATH . '/kit2')))
+                throw new \Exception("Can't move the unzipped framework to the target directory!");
+        }
+        else {
+            // at windows copy file per file ...
+            $this->xcopy(self::sanitizePath($source_dir), self::sanitizePath(WB_PATH . '/kit2'));
+        }
         // delete not needed GIT files
         $delete_files = array(
             '.gitattributes',
@@ -435,14 +484,14 @@ class Setup
         );
         foreach ($delete_files as $file) {
             // we don't want any error prompt at this point
-            @unlink(WB_PATH . '/kit2/' . $file);
+            @unlink(self::sanitizePath(WB_PATH . '/kit2/' . $file));
         }
 
         // clean up the temporary directory
-        @array_map('unlink', glob(WB_PATH . '/temp/unzip/*'));
+        @array_map('unlink', glob(self::sanitizePath(WB_PATH . '/temp/unzip/*')));
 
-        if (! file_exists(WB_PATH . '/kit2/config')) {
-            if (! mkdir(WB_PATH . '/kit2/config'))
+        if (!file_exists(self::sanitizePath(WB_PATH . '/kit2/config'))) {
+            if (!mkdir(self::sanitizePath(WB_PATH . '/kit2/config')))
                 throw new \Exception("Can't create the directory for the framework configuration files!");
         }
 
@@ -486,7 +535,7 @@ class Setup
     protected function downloadAndConfigTheBasicExtension()
     {
         self::$zip_target_name = 'basicExtension.zip';
-        self::$zip_target_path = WB_PATH . '/temp/unzip';
+        self::$zip_target_path = self::sanitizePath(WB_PATH . '/temp/unzip');
 
         // clean up the temporary directory
         @array_map('unlink', glob(WB_PATH . '/temp/unzip/*'));
@@ -508,21 +557,21 @@ class Setup
         $unzip = new unZip();
 
         // create target directory
-        $unzip->checkDirectory(WB_PATH . '/temp/unzip/basic');
-        $unzip->setUnZipPath(WB_PATH . '/temp/unzip/basic');
+        $unzip->checkDirectory(self::sanitizePath(WB_PATH . '/temp/unzip/basic'));
+        $unzip->setUnZipPath(self::sanitizePath(WB_PATH . '/temp/unzip/basic'));
 
         $unzip->extract(self::$zip_target_path . '/' . self::$zip_target_name);
 
         // GitHub ZIP's contain a subdirectory with name we don't know ...
         $source_dir = '';
-        $handle = opendir(WB_PATH . '/temp/unzip/basic');
+        $handle = opendir(self::sanitizePath(WB_PATH . '/temp/unzip/basic'));
         // we loop through the temp dir to get the first subdirectory ...
         while (false !== ($file = readdir($handle))) {
             if ('.' == $file || '..' == $file)
                 continue;
-            if (is_dir(WB_PATH . '/temp/unzip/basic/' . $file)) {
+            if (is_dir(self::sanitizePath(WB_PATH . '/temp/unzip/basic/' . $file))) {
                 // ... here we got it!
-                $source_dir = WB_PATH . '/temp/unzip/basic/' . $file;
+                $source_dir = self::sanitizePath(WB_PATH . '/temp/unzip/basic/' . $file);
                 break;
             }
         }
@@ -531,12 +580,19 @@ class Setup
             throw new \Exception('The unzipped archive has an unexpected structure, please contact the support!');
 
         // create the directory for the Basic extension
-        if (! mkdir(WB_PATH . '/kit2/extension/phpmanufaktur/phpManufaktur/Basic'))
+        if (!mkdir(self::sanitizePath(WB_PATH . '/kit2/extension/phpmanufaktur/phpManufaktur/Basic'))) {
             throw new \Exception("Can't create the target directory for the kitFramework Basic extension!");
-
+        }
         // move all files from the temporary directory to the target
-        if (! rename($source_dir, WB_PATH . '/kit2/extension/phpmanufaktur/phpManufaktur/Basic'))
-            throw new \Exception("Can't move the unzipped kitFramework extension to the target directory!");
+        if (strtoupper(substr(PHP_OS, 0, 3)) !== 'WIN') {
+            // linux only: just rename
+            if (! rename($source_dir, WB_PATH . '/kit2/extension/phpmanufaktur/phpManufaktur/Basic'))
+                throw new \Exception("Can't move the unzipped kitFramework extension to the target directory!");
+        }
+        else {
+            // windows: use copy
+            $this->xcopy($source_dir, self::sanitizePath(WB_PATH . '/kit2/extension/phpmanufaktur/phpManufaktur/Basic'));
+        }
 
         // delete not needed GIT files
         $delete_files = array(
@@ -545,26 +601,56 @@ class Setup
         );
         foreach ($delete_files as $file) {
             // we don't want any error prompt at this point
-            @unlink(WB_PATH . '/kit2/extension/phpmanufaktur/phpManufaktur/Basic/' . $file);
+            @unlink(self::sanitizePath(WB_PATH . '/kit2/extension/phpmanufaktur/phpManufaktur/Basic/' . $file));
         }
 
         // clean up the temporary directory
-        @array_map('unlink', glob(WB_PATH . '/temp/unzip/*'));
+        @array_map('unlink', glob(self::sanitizePath(WB_PATH . '/temp/unzip/*')));
 
     } // downloadAndConfigTheBasicExtension()
 
-    public static function xcopy($src,$dest)
+    /**
+     * Copy a file, or recursively copy a folder and its contents
+     *
+     * @param string $source Source path
+     * @param string $dest Destination path
+     * @param string $permissions New folder creation permissions
+     * @return bool Returns true on success, false on failure
+     *
+     * @author <http://stackoverflow.com/a/12763962/2243419>
+     */
+    public static function xcopy($source, $dest, $permissions = 0755)
     {
-        foreach  (scandir($src) as $file) {
-            if (!is_readable($src.'/'.$file)) continue;
-            if (is_dir($file) && ($file!='.') && ($file!='..') ) {
-                @mkdir($dest . '/' . $file);
-                self::xcopy($src.'/'.$file, $dest.'/'.$file);
-            }
-            else {
-                @copy($src.'/'.$file, $dest.'/'.$file);
-            }
+        // Check for symlinks
+        if (is_link($source)) {
+            return symlink(readlink($source), $dest);
         }
+
+        // Simple copy for a file
+        if (is_file($source)) {
+            return copy($source, $dest);
+        }
+
+        // Make destination directory
+        if (!is_dir($dest)) {
+            mkdir($dest, $permissions);
+        }
+
+        // Loop through the folder
+        $dir = dir($source);
+        while (false !== $entry = $dir->read()) {
+            // Skip pointers
+            if ($entry == '.' || $entry == '..') {
+                continue;
+            }
+
+            // Deep copy directories
+            self::xcopy("$source/$entry", "$dest/$entry");
+        }
+
+        // Clean up
+        $dir->close();
+        return true;
     }
 
     public static function checkSearch()
