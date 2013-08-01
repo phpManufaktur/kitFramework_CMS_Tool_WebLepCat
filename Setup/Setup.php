@@ -720,6 +720,13 @@ class Setup
         // download and config the kitFramework
         $this->downloadAndConfigTheFramework();
 
+        $relative_path = parse_url(WB_URL, PHP_URL_PATH);
+        if (!empty($relative_path) && file_exists(WB_PATH.'/modules/kit_framework/Setup/htaccess.htt')) {
+            $htaccess = file_get_contents(WB_PATH.'/modules/kit_framework/Setup/htaccess.htt');
+            $htaccess = str_ireplace('{RELATIVE_PATH}', "$relative_path/kit2", $htaccess);
+            file_put_contents(WB_PATH.'/kit2/.htaccess', $htaccess);
+        }
+
         // download and config the Basic extension
         $this->downloadAndConfigTheBasicExtension();
 
