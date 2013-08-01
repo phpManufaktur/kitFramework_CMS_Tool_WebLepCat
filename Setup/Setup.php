@@ -33,6 +33,8 @@ class Setup
 
     public function __construct ()
     {
+        // increase the max. exexcution time
+        ini_set('max_execution_time', 300);
         // init the GitHub interface
         $gitHub = new gitHub();
         // get the kitFramework repository data
@@ -91,7 +93,7 @@ class Setup
             curl_setopt($ch, CURLOPT_USERAGENT, self::USERAGENT);
             curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-		        // exec cURL and get the file content
+                // exec cURL and get the file content
             if (false === ($file_content = curl_exec($ch))) {
                 throw new \Exception(sprintf('cURL Error: [%d] - %s', curl_errno($ch), curl_error($ch)));
             }
