@@ -10,12 +10,12 @@
  */
 
 if (!defined('WB_PATH'))
-	exit('Can\'t access this file directly!');
+    exit('Can\'t access this file directly!');
 
 $module_directory     = 'kit_framework';
 $module_name          = 'kitFramework';
 $module_function      = 'tool';
-$module_version       = '0.20';
+$module_version       = '0.22';
 $module_status        = 'Beta';
 $module_platform      = '2.8';
 $module_author        = 'Ralf Hertsch, Berlin (Germany)';
