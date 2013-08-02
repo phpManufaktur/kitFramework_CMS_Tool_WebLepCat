@@ -1,6 +1,6 @@
 <div class="kit_setup">
   <div class="kit_setup_logo">
-    <img src="{{ logo_source }}" width="200" height="175" alt="KIT2" />
+    <img src="{{ logo_source }}" width="200" height="200" alt="kitFramework" />
   </div>
   <div class="kit_setup_info">
     <p>This Admin-Tool will connect your Content Management System with the kitFramework and provide you with additional applications and tools.</p>
