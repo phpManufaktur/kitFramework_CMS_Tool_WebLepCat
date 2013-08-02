@@ -28,6 +28,7 @@ class Setup
     protected static $basicExtension_version = null;
     protected static $zip_target_path = null;
     protected static $zip_target_name = null;
+    protected static $cms_type = null;
 
     const USERAGENT = 'kitFramework::Interface';
 
@@ -35,6 +36,15 @@ class Setup
     {
         // increase the max. exexcution time
         ini_set('max_execution_time', 300);
+        if (defined('LEPTON_VERSION')) {
+            self::$cms_type = 'LEPTON';
+        }
+        elseif (defined('CAT_VERSION')) {
+            self::$cms_type = 'BlackCat';
+        }
+        else {
+            self::$cms_type = 'WebsiteBaker';
+        }
         // init the GitHub interface
         $gitHub = new gitHub();
         // get the kitFramework repository data
@@ -128,8 +138,13 @@ class Setup
      */
     public function checkEMailSettings ()
     {
-        // the mailer routine must be 'smtp' and authentication 'true' (LEPTON) or '1' (WB)
-        return ((WBMAILER_ROUTINE == 'smtp') && ((WBMAILER_SMTP_AUTH == 'true') || (WBMAILER_SMTP_AUTH == '1')));
+        if (self::$cms_type == 'BlackCat') {
+            return ((CATMAILER_ROUTINE == 'smtp') && ((CATMAILER_SMTP_AUTH == 'true') || (CATMAILER_SMTP_AUTH == '1')));
+        }
+        else {
+            // the mailer routine must be 'smtp' and authentication 'true' (LEPTON) or '1' (WB)
+            return ((WBMAILER_ROUTINE == 'smtp') && ((WBMAILER_SMTP_AUTH == 'true') || (WBMAILER_SMTP_AUTH == '1')));
+        }
     } // checkEMailSettings()
 
     /**
@@ -141,14 +156,26 @@ class Setup
      */
     protected function createEMailConfiguration ()
     {
-        $swift_config = array(
-            'SERVER_EMAIL' => SERVER_EMAIL,
-            'SERVER_NAME' => WBMAILER_DEFAULT_SENDERNAME,
-            'SMTP_HOST' => WBMAILER_SMTP_HOST,
-            'SMTP_PORT' => 25,
-            'SMTP_USERNAME' => WBMAILER_SMTP_USERNAME,
-            'SMTP_PASSWORD' => WBMAILER_SMTP_PASSWORD
-        );
+        if (self::$cms_type == 'BlackCat') {
+            $swift_config = array(
+                'SERVER_EMAIL' => SERVER_EMAIL,
+                'SERVER_NAME' => CATMAILER_DEFAULT_SENDERNAME,
+                'SMTP_HOST' => CATMAILER_SMTP_HOST,
+                'SMTP_PORT' => 25,
+                'SMTP_USERNAME' => CATMAILER_SMTP_USERNAME,
+                'SMTP_PASSWORD' => CATMAILER_SMTP_PASSWORD
+            );
+        }
+        else {
+            $swift_config = array(
+                'SERVER_EMAIL' => SERVER_EMAIL,
+                'SERVER_NAME' => WBMAILER_DEFAULT_SENDERNAME,
+                'SMTP_HOST' => WBMAILER_SMTP_HOST,
+                'SMTP_PORT' => 25,
+                'SMTP_USERNAME' => WBMAILER_SMTP_USERNAME,
+                'SMTP_PASSWORD' => WBMAILER_SMTP_PASSWORD
+            );
+        }
         if (! file_put_contents(WB_PATH . '/kit2/config/swift.cms.json', json_encode($swift_config)))
             throw new \Exception('Can\'t write the configuration file for the SwiftMailer!');
         return true;
@@ -375,7 +402,7 @@ class Setup
      */
     protected function addFilter ()
     {
-        if (defined('LEPTON_VERSION')) {
+        if (defined('LEPTON_VERSION') || defined('CAT_VERSION')) {
             // register the filter at LEPTON outputInterface
             if (! file_exists(WB_PATH . '/modules/output_interface/output_interface.php')) {
                 throw new \Exception('Missing LEPTON outputInterface, can\'t register the kitFramework filter - installation is not complete!');

@@ -17,67 +17,67 @@ if (!defined('WB_PATH'))
 require_once WB_PATH.'/modules/kit_framework/Setup/Setup.php';
 
 if (!file_exists(WB_PATH.'/modules/kit_framework/languages/'.LANGUAGE.'.php'))
-	require_once (WB_PATH.'/modules/kit_framework/languages/EN.php');
+    require_once (WB_PATH.'/modules/kit_framework/languages/EN.php');
 else
-	require_once (WB_PATH.'/modules/kit_framework/languages/'.LANGUAGE.'.php');
+    require_once (WB_PATH.'/modules/kit_framework/languages/'.LANGUAGE.'.php');
 
-global $LANG;
+global $LANGUAGE;
 
 class Tool {
 
-	protected static $action = null;
+    protected static $action = null;
 
-	public function __construct() {
-		self::$action = (isset($_REQUEST['action'])) ? $_REQUEST['action'] : 'NONE';
-	} // __construct()
+    public function __construct() {
+        self::$action = (isset($_REQUEST['action'])) ? $_REQUEST['action'] : 'NONE';
+    } // __construct()
 
-	public function exec() {
+    public function exec() {
 
-		if (!file_exists(WB_PATH.'/kit2')) {
-			// start the install procedere
-			if (self::$action == 'install') {
-				// execute the installation of the kitFramework
-				$setup = new Setup();
-				if (!$setup->checkEMailSettings()) {
-					// the email settings are not valid!
-					if (!file_exists(WB_PATH.'/modules/kit_framework/Setup/View/'.LANGUAGE.'.mailer.htt'))
-						$html = file_get_contents(WB_PATH.'/modules/kit_framework/Setup/View/EN.mailer.htt');
-					else
-						$html = file_get_contents(WB_PATH.'/modules/kit_framework/Setup/View/'.LANGUAGE.'.mailer.htt');
-					$img_source = WB_URL.'/modules/kit_framework/images/mail_icon_100x100.png';
-					$settings_url = ADMIN_URL.'/settings/index.php?advanced=yes';
-					$html = str_replace(array('{{ img_source }}', '{{ settings_url }}'), array($img_source, $settings_url), $html);
-					return $html;
-				}
-				$setup->exec();
-				// success - show the octocat as success dialog
-				if (!file_exists(WB_PATH.'/modules/kit_framework/Setup/View/'.LANGUAGE.'.success.htt'))
-					$html = file_get_contents(WB_PATH.'/modules/kit_framework/Setup/View/EN.success.htt');
-				else
-					$html = file_get_contents(WB_PATH.'/modules/kit_framework/Setup/View/'.LANGUAGE.'.success.htt');
-				$logo_source = WB_URL.'/modules/kit_framework/images/goretocat_200x200.png';
-				$start_url = ADMIN_URL.'/admintools/tool.php?tool=kit_framework';
-				$html = str_replace(array('{{ logo_source }}', '{{ start_url }}'), array($logo_source, $start_url), $html);
-				return $html;
-			}
-			else {
-				// show info before downloading the kitFramework
-				if (!file_exists(WB_PATH.'/modules/kit_framework/Setup/View/'.LANGUAGE.'.setup.htt'))
-					$html = file_get_contents(WB_PATH.'/modules/kit_framework/Setup/View/EN.setup.htt');
-				else
-					$html = file_get_contents(WB_PATH.'/modules/kit_framework/Setup/View/'.LANGUAGE.'.setup.htt');
-				$logo_source = WB_URL.'/modules/kit_framework/images/kit2-secret-200x175.png';
-				$setup_url = ADMIN_URL.'/admintools/tool.php?tool=kit_framework&action=install';
-				$html = str_replace(array('{{ logo_source }}', '{{ setup_url }}'), array($logo_source, $setup_url), $html);
-				return $html;
-			}
-		}
-		else {
-			// nothing else to do, so we call the kitFramework
-	    global $database;
+        if (!file_exists(WB_PATH.'/kit2')) {
+            // start the install procedere
+            if (self::$action == 'install') {
+                // execute the installation of the kitFramework
+                $setup = new Setup();
+                if (!$setup->checkEMailSettings()) {
+                    // the email settings are not valid!
+                    if (!file_exists(WB_PATH.'/modules/kit_framework/Setup/View/'.LANGUAGE.'.mailer.htt'))
+                        $html = file_get_contents(WB_PATH.'/modules/kit_framework/Setup/View/EN.mailer.htt');
+                    else
+                        $html = file_get_contents(WB_PATH.'/modules/kit_framework/Setup/View/'.LANGUAGE.'.mailer.htt');
+                    $img_source = WB_URL.'/modules/kit_framework/images/mail_icon_100x100.png';
+                    $settings_url = ADMIN_URL.'/settings/index.php?advanced=yes';
+                    $html = str_replace(array('{{ img_source }}', '{{ settings_url }}'), array($img_source, $settings_url), $html);
+                    return $html;
+                }
+                $setup->exec();
+                // success - show the octocat as success dialog
+                if (!file_exists(WB_PATH.'/modules/kit_framework/Setup/View/'.LANGUAGE.'.success.htt'))
+                    $html = file_get_contents(WB_PATH.'/modules/kit_framework/Setup/View/EN.success.htt');
+                else
+                    $html = file_get_contents(WB_PATH.'/modules/kit_framework/Setup/View/'.LANGUAGE.'.success.htt');
+                $logo_source = WB_URL.'/modules/kit_framework/images/framework.jpg';
+                $start_url = ADMIN_URL.'/admintools/tool.php?tool=kit_framework';
+                $html = str_replace(array('{{ logo_source }}', '{{ start_url }}'), array($logo_source, $start_url), $html);
+                return $html;
+            }
+            else {
+                // show info before downloading the kitFramework
+                if (!file_exists(WB_PATH.'/modules/kit_framework/Setup/View/'.LANGUAGE.'.setup.htt'))
+                    $html = file_get_contents(WB_PATH.'/modules/kit_framework/Setup/View/EN.setup.htt');
+                else
+                    $html = file_get_contents(WB_PATH.'/modules/kit_framework/Setup/View/'.LANGUAGE.'.setup.htt');
+                $logo_source = WB_URL.'/modules/kit_framework/images/framework.jpg';
+                $setup_url = ADMIN_URL.'/admintools/tool.php?tool=kit_framework&action=install';
+                $html = str_replace(array('{{ logo_source }}', '{{ setup_url }}'), array($logo_source, $setup_url), $html);
+                return $html;
+            }
+        }
+        else {
+            // nothing else to do, so we call the kitFramework
+        global $database;
 
-	    // check the search function
-	    Setup::checkSearch();
+        // check the search function
+        Setup::checkSearch();
 
         if (null === ($pwd = $database->get_one("SELECT `password` FROM `".TABLE_PREFIX."users` WHERE `username`='".$_SESSION['USERNAME']."'", MYSQL_ASSOC)))
             throw new Exception($database->get_error());
@@ -110,19 +110,19 @@ return <<<EOD
         <a href="https://kit2.phpmanufaktur.de" target="_blank">kitFramework by phpManufaktur</a>
     </div>
 EOD;
-		}
-	} // exec()
+        }
+    } // exec()
 
 } // class Tool
 
 try {
-	$Tool = new Tool();
-	echo $Tool->exec();
+    $Tool = new Tool();
+    echo $Tool->exec();
 } catch (\Exception $e) {
-	// prompt the error message
-	echo sprintf('<div class="kit_error">%s<div class="kit_error_support">%s</div></div>',
-			sprintf('[%s - %d] %s', basename($e->getFile()), $e->getLine(), $e->getMessage()),
-			$LANG['addons_support_group']);
+    // prompt the error message
+    echo sprintf('<div class="kit_error">%s<div class="kit_error_support">%s</div></div>',
+            sprintf('[%s - %d] %s', basename($e->getFile()), $e->getLine(), $e->getMessage()),
+            $LANGUAGE['addons_support_group']);
 }
 
 
