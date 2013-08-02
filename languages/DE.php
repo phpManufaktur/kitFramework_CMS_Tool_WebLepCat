@@ -20,7 +20,7 @@ if ('á' != "\xc3\xa1") {
 // module description for the info file
 $module_description = 'Verbindet Ihr Content Management System (CMS) mit dem kitFramework und stellt Ihnen ergänzende Anwendungsprogramme sowie Werkzeuge zur Verfügung.';
 
-$LANG = array(
-		'addons_support_group'
-			=> 'Bitte helfen Sie mit diese Open Source Software zu verbessern und melden Sie das aufgetretene Problem der <a href="https://support.phpmanufaktur.de" target="_blank">phpManufaktur Addons Support</a> Gruppe.'
-		);
+$LANGUAGE = array(
+        'addons_support_group'
+            => 'Bitte helfen Sie mit diese Open Source Software zu verbessern und melden Sie das aufgetretene Problem der <a href="https://support.phpmanufaktur.de" target="_blank">phpManufaktur Addons Support</a> Gruppe.'
+        );
