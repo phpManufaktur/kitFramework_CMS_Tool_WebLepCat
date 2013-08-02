@@ -366,10 +366,10 @@ class Setup
         $backup = WB_PATH . '/modules/output_filter/original-kitframework-filter-routines.php';
 
         $addline = "\n\n\t\t// exec kitFramework filter";
-        $addline .= "\n\t\tif (file_exists(WB_PATH .'/modules/kit_framework/Filter/outputFilter.php')) { ";
-        $addline .= "\n\t\t\trequire_once (WB_PATH .'/modules/kit_framework/Filter/outputFilter.php'); ";
-        $addline .= "\n\t\t\t" . '$cmsOutputFilter = new \phpManufaktur\kitFramework\Filter\outputFilter(); ';
-        $addline .= "\n\t\t\t" . '$content = $cmsOutputFilter->exec($content); ';
+        $addline .= "\n\t\tif (file_exists(WB_PATH.'/kit2/extension/phpmanufaktur/phpManufaktur/Basic/Control/CMS/WebsiteBaker/OutputFilter.php')) { ";
+        $addline .= "\n\t\t\trequire_once (WB_PATH.'/kit2/extension/phpmanufaktur/phpManufaktur/Basic/Control/CMS/WebsiteBaker/OutputFilter.php'); ";
+        $addline .= "\n\t\t\t" . '$cmsOutputFilter = new \phpManufaktur\Basic\Control\CMS\WebsiteBaker\OutputFilter(); ';
+        $addline .= "\n\t\t\t" . '$content = $cmsOutputFilter->parse($content); ';
         $addline .= "\n\t\t}\n\n ";
 
         if (file_exists($filter_path)) {
@@ -402,7 +402,9 @@ class Setup
      */
     protected function addFilter ()
     {
-        if (defined('LEPTON_VERSION') || defined('CAT_VERSION')) {
+        global $database;
+
+        if (defined('LEPTON_VERSION')) {
             // register the filter at LEPTON outputInterface
             if (! file_exists(WB_PATH . '/modules/output_interface/output_interface.php')) {
                 throw new \Exception('Missing LEPTON outputInterface, can\'t register the kitFramework filter - installation is not complete!');
@@ -411,7 +413,21 @@ class Setup
                     include_once (WB_PATH . '/modules/output_interface/output_interface.php');
                 register_output_filter('kit_framework', 'kitFramework');
             }
-        } else {
+        }
+        elseif (defined('CAT_VERSION')) {
+            // register the filter at the blackcatFilter
+            $SQL = "SELECT `filter_name` FROM `".CAT_TABLE_PREFIX."mod_filter` WHERE `filter_name`='kitCommands'";
+            $check = $database->get_one($SQL);
+            if ($check != 'kitCommands') {
+                $SQL = "INSERT INTO `".CAT_TABLE_PREFIX."mod_filter` (`filter_name`, `module_name`, `filter_description`, `filter_code`, `filter_active`) ".
+                    "VALUES ('kitCommands', 'kit_framework', 'Enable the usage of kitCommands within BlackCat', '', 'Y');";
+                $database->query($SQL);
+                if ($database->is_error()) {
+                    throw new \Exception($database->get_error());
+                }
+            }
+        }
+        else {
             if (version_compare(WB_VERSION, '2.8.3', '>=')) {
                 // WebsiteBaker 2.8.3
                 $filter_path = WB_PATH . '/modules/output_filter/index.php';
