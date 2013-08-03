@@ -1,4 +1,4 @@
-### kitFramework for WebsiteBaker & LEPTON CMS
+### kitFramework for WebsiteBaker, LEPTON and BlackCat CMS
 
 Admin-Tool for the Content Management Systems [WebsiteBaker](http://websitebaker2.org), [LEPTON CMS](http://lepton-cms.org) and [BlackCat](http://blackcat-cms.org) witch enables you to directly access the kitFramework and extend your CMS with tools and applications developed for the kitFramework.
  
