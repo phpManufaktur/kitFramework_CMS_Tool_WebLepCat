@@ -18,7 +18,7 @@ if ('á' != "\xc3\xa1") {
 }
 
 // module description for the info file
-$module_description = 'Verbindet Ihr Content Management System (CMS) mit dem kitFramework und stellt Ihnen ergänzende Anwendungsprogramme sowie Werkzeuge zur Verfügung.';
+$module_description = 'Zusätzliche Anwendungen und Erweiterungen für Ihr Content Management System. Mit einem Klick installiert, können Sie diese in jedem WYSIWYG Abschnitt verwenden.';
 
 $LANGUAGE = array(
         'addons_support_group'

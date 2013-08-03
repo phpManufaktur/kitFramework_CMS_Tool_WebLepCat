@@ -18,7 +18,7 @@ if ('á' != "\xc3\xa1") {
 }
 
 // module description for the info file
-$module_description = 'Connect your Content Management System (CMS) with the kitFramework and give you access to additional applications and tools';
+$module_description = 'Additional Applications and Extensions for your Content Management System, install them with just a click and use them in every WYSIWYG section.';
 
 $LANGUAGE = array(
         'addons_support_group'
