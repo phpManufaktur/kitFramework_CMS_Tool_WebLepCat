@@ -95,7 +95,7 @@ class Tool {
 
         $cms_info['target'] = 'framework';
         $framework_url = WB_URL.'/kit2/welcome/cms/'.base64_encode(json_encode($cms_info));
-        $expand_img = WB_URL.'/kit2/template/framework/default/images/expand_10x10.png';
+        $expand_img = WB_URL.'/kit2/extension/phpmanufaktur/phpManufaktur/Basic/Template/default/framework/image/expand_10x10.png';
 
 return <<<EOD
     <div style="width:100%;height:10px;margin:0 0 2px 0;padding:0;text-align:right;">
