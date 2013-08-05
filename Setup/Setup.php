@@ -30,6 +30,11 @@ class Setup
     protected static $zip_target_name = null;
     protected static $cms_type = null;
 
+    protected static $proxy = null;
+    protected static $proxy_auth = null;
+    protected static $proxy_port = null;
+    protected static $proxy_usrpwd = null;
+
     const USERAGENT = 'kitFramework::Interface';
 
     public function __construct ()
@@ -56,6 +61,21 @@ class Setup
 
         self::$download_method = 'UNKNOWN';
         $this->checkDownloadMethod();
+
+        if (file_exists(WB_PATH.'/modules/kit_framework/proxy.json')) {
+            $proxy = json_decode(file_get_contents(WB_PATH.'/modules/kit_framework/proxy.json'), true);
+            if (isset($proxy['PROXYAUTH']) && ($proxy['PROXYAUTH'] != 'NONE')) {
+                if (strtoupper($proxy['PROXYAUTH']) == 'NTLM') {
+                    self::$proxy_auth = CURLAUTH_NTLM;
+                }
+                else {
+                    self::$proxy_auth = CURLAUTH_BASIC;
+                }
+                self::$proxy = $proxy['PROXY'];
+                self::$proxy_port = $proxy['PROXYPORT'];
+                self::$proxy_usrpwd = $proxy['PROXYUSERPWD'];
+            }
+        }
     } // __construct()
 
     /**
@@ -103,6 +123,12 @@ class Setup
             curl_setopt($ch, CURLOPT_USERAGENT, self::USERAGENT);
             curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            if (!is_null(self::$proxy_auth)) {
+                curl_setopt($ch, CURLOPT_PROXYAUTH, self::$proxy_auth);
+                curl_setopt($ch, CURLOPT_PROXY, self::$proxy);
+                curl_setopt($ch, CURLOPT_PROXYPORT, self::$proxy_port);
+                curl_setopt($ch, CURLOPT_PROXYUSERPWD, self::$proxy_usrpwd);
+            }
                 // exec cURL and get the file content
             if (false === ($file_content = curl_exec($ch))) {
                 throw new \Exception(sprintf('cURL Error: [%d] - %s', curl_errno($ch), curl_error($ch)));
