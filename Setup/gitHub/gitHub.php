@@ -16,7 +16,7 @@ class gitHub {
     const USERAGENT = 'kitFramework::Interface';
 
     protected static $proxy = null;
-    protected static $proxy_auth = null;
+    protected static $proxy_auth = CURLAUTH_BASIC;
     protected static $proxy_port = null;
     protected static $proxy_usrpwd = null;
 
@@ -31,10 +31,10 @@ class gitHub {
                 else {
                     self::$proxy_auth = CURLAUTH_BASIC;
                 }
-                self::$proxy = $proxy['PROXY'];
-                self::$proxy_port = $proxy['PROXYPORT'];
                 self::$proxy_usrpwd = $proxy['PROXYUSERPWD'];
             }
+            self::$proxy = $proxy['PROXY'];
+            self::$proxy_port = $proxy['PROXYPORT'];
         }
     }
 
@@ -56,7 +56,7 @@ class gitHub {
         curl_setopt($ch, CURLOPT_USERAGENT, self::USERAGENT);
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        if (!is_null(self::$proxy_auth)) {
+        if (!is_null(self::$proxy)) {
             curl_setopt($ch, CURLOPT_PROXYAUTH, self::$proxy_auth);
             curl_setopt($ch, CURLOPT_PROXY, self::$proxy);
             curl_setopt($ch, CURLOPT_PROXYPORT, self::$proxy_port);

@@ -31,7 +31,7 @@ class Setup
     protected static $cms_type = null;
 
     protected static $proxy = null;
-    protected static $proxy_auth = null;
+    protected static $proxy_auth = CURLAUTH_BASIC;
     protected static $proxy_port = null;
     protected static $proxy_usrpwd = null;
 
@@ -71,10 +71,10 @@ class Setup
                 else {
                     self::$proxy_auth = CURLAUTH_BASIC;
                 }
-                self::$proxy = $proxy['PROXY'];
-                self::$proxy_port = $proxy['PROXYPORT'];
                 self::$proxy_usrpwd = $proxy['PROXYUSERPWD'];
             }
+            self::$proxy = $proxy['PROXY'];
+            self::$proxy_port = $proxy['PROXYPORT'];
         }
     } // __construct()
 
@@ -123,7 +123,7 @@ class Setup
             curl_setopt($ch, CURLOPT_USERAGENT, self::USERAGENT);
             curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-            if (!is_null(self::$proxy_auth)) {
+            if (!is_null(self::$proxy)) {
                 curl_setopt($ch, CURLOPT_PROXYAUTH, self::$proxy_auth);
                 curl_setopt($ch, CURLOPT_PROXY, self::$proxy);
                 curl_setopt($ch, CURLOPT_PROXYPORT, self::$proxy_port);
@@ -442,6 +442,7 @@ class Setup
         }
         elseif (defined('CAT_VERSION')) {
             // register the filter at the blackcatFilter
+            /*
             $SQL = "SELECT `filter_name` FROM `".CAT_TABLE_PREFIX."mod_filter` WHERE `filter_name`='kitCommands'";
             $check = $database->get_one($SQL);
             if ($check != 'kitCommands') {
@@ -452,6 +453,9 @@ class Setup
                     throw new \Exception($database->get_error());
                 }
             }
+            */
+            require_once CAT_PATH.'/modules/blackcatFilter/filter.php';
+            register_filter('kitCommands', 'kit_framework', 'Enable the usage of kitCommands within BlackCat');
         }
         else {
             if (version_compare(WB_VERSION, '2.8.3', '>=')) {
@@ -801,6 +805,13 @@ class Setup
 
         // add the output filter for the framework
         $this->addFilter();
+
+        // copy the proxy.json
+        if (file_exists(WB_PATH.'/modules/kit_framework/proxy.json')) {
+            if (file_exists(WB_PATH.'/kit2/config') && !file_exists(WB_PATH.'/kit2/config/proxy.json')) {
+                @copy(WB_PATH.'/modules/kit_framework/proxy.json', WB_PATH.'/kit2/config/proxy.json');
+            }
+        }
     } // exec()
 
 } // class setup
