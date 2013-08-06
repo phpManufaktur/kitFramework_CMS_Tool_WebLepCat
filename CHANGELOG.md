@@ -4,6 +4,11 @@
 Ralf Hertsch, Stockholmer Str. 31, 13359 Berlin (Germany)
 http://phpManufaktur.de - ralf.hertsch@phpManufaktur.de
 
+**0.23** - 2013-08-06
+
+* added support for proxy authentication
+* added register_filter() for BlackCat CMS
+
 **0.22** - 2013-08-02
 
 * moved output filters to kitFramework::Basic
