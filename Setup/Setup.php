@@ -29,6 +29,7 @@ class Setup
     protected static $zip_target_path = null;
     protected static $zip_target_name = null;
     protected static $cms_type = null;
+    protected static $cms_version = null;
 
     protected static $proxy = null;
     protected static $proxy_auth = CURLAUTH_BASIC;
@@ -43,12 +44,19 @@ class Setup
         ini_set('max_execution_time', 300);
         if (defined('LEPTON_VERSION')) {
             self::$cms_type = 'LEPTON';
+            self::$cms_version = LEPTON_VERSION;
         }
         elseif (defined('CAT_VERSION')) {
             self::$cms_type = 'BlackCat';
+            self::$cms_version = CAT_VERSION;
         }
         else {
             self::$cms_type = 'WebsiteBaker';
+            self::$cms_version = WB_VERSION;
+            // fix for WB 2.8.4
+            if ((self::$cms_version == '2.8.3') && file_exists(WB_PATH.'/setup.ini.php')) {
+                self::$cms_version = '2.8.4';
+            }
         }
         // init the GitHub interface
         $gitHub = new gitHub();
@@ -252,16 +260,37 @@ class Setup
      */
     protected function createDoctrineConfiguration ()
     {
-        // get the database settings from the CMS
-        $doctrine_config = array(
-            'DB_TYPE' => DB_TYPE,
-            'DB_HOST' => DB_HOST,
-            'DB_PORT' => (defined('DB_PORT')) ? DB_PORT : '3306',
-            'DB_NAME' => DB_NAME,
-            'DB_USERNAME' => DB_USERNAME,
-            'DB_PASSWORD' => DB_PASSWORD,
-            'TABLE_PREFIX' => TABLE_PREFIX
-        );
+        if ((self::$cms_type == 'WebsiteBaker') && version_compare(self::$cms_version, '2.8.4', '>=')) {
+            if (file_exists(WB_PATH.'/setup.ini.php')) {
+                // WebsiteBaker 2.8.4
+                $settings = parse_ini_file(WB_PATH.'/setup.ini.php', true);
+                // get the database settings from the CMS
+                $doctrine_config = array(
+                    'DB_TYPE' => $settings['DataBase']['type'],
+                    'DB_HOST' => $settings['DataBase']['host'],
+                    'DB_PORT' => isset($settings['DataBase']['port']) ? $settings['DataBase']['port'] : '3306',
+                    'DB_NAME' => $settings['DataBase']['name'],
+                    'DB_USERNAME' => $settings['DataBase']['user'],
+                    'DB_PASSWORD' => $settings['DataBase']['pass'],
+                    'TABLE_PREFIX' => TABLE_PREFIX
+                );
+            }
+            else {
+                throw new \Exception("Missing the constants with the DB settings!");
+            }
+        }
+        else {
+            // get the database settings from the CMS
+            $doctrine_config = array(
+                'DB_TYPE' => DB_TYPE,
+                'DB_HOST' => DB_HOST,
+                'DB_PORT' => (defined('DB_PORT')) ? DB_PORT : '3306',
+                'DB_NAME' => DB_NAME,
+                'DB_USERNAME' => DB_USERNAME,
+                'DB_PASSWORD' => DB_PASSWORD,
+                'TABLE_PREFIX' => TABLE_PREFIX
+            );
+        }
         if (! file_put_contents(WB_PATH . '/kit2/config/doctrine.cms.json', json_encode($doctrine_config)))
             throw new \Exception('Can\'t write the configuration file for Doctrine!');
         return true;
@@ -289,8 +318,8 @@ class Setup
         $cms_config['CMS_TEMP_URL'] = WB_URL . '/temp';
         $cms_config['CMS_ADMIN_PATH'] = ADMIN_PATH;
         $cms_config['CMS_ADMIN_URL'] = ADMIN_URL;
-        $cms_config['CMS_TYPE'] = (defined('LEPTON_VERSION')) ? 'LEPTON' : 'WebsiteBaker';
-        $cms_config['CMS_VERSION'] = (defined('LEPTON_VERSION')) ? LEPTON_VERSION : WB_VERSION;
+        $cms_config['CMS_TYPE'] = self::$cms_type;
+        $cms_config['CMS_VERSION'] = self::$cms_version;
 
         if (! file_put_contents(WB_PATH . '/kit2/config/cms.json', json_encode($cms_config)))
             throw new \Exception('Can\'t write the configuration file for the CMS!');
