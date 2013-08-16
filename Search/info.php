@@ -13,7 +13,7 @@ if (!defined('WB_PATH'))
 	exit('Can\'t access this file directly!');
 
 $module_directory     = 'kit_framework_search';
-$module_name          = 'kitFrameworkSearch';
+$module_name          = 'kitFramework Search';
 $module_function      = 'page';
 $module_version       = '0.10';
 $module_status        = 'Beta';
