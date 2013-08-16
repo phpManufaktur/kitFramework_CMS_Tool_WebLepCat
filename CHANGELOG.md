@@ -4,6 +4,10 @@
 Ralf Hertsch, Stockholmer Str. 31, 13359 Berlin (Germany)
 http://phpManufaktur.de - ralf.hertsch@phpManufaktur.de
 
+**0.24** - 2013-08-16
+
+* added support for WebsiteBaker 2.8.4
+
 **0.23** - 2013-08-06
 
 * added support for proxy authentication
