@@ -335,7 +335,8 @@ class Setup
     protected function updateFrameworkConfiguration ()
     {
         $framework_config = array(
-            'DEBUG' => true,
+            'DEBUG' => false,
+            'CACHE' => true,
             'FRAMEWORK_TEMPLATES' => 'default'
         );
         if (file_exists(WB_PATH . '/kit2/config/framework.json')) {
@@ -471,18 +472,6 @@ class Setup
         }
         elseif (defined('CAT_VERSION')) {
             // register the filter at the blackcatFilter
-            /*
-            $SQL = "SELECT `filter_name` FROM `".CAT_TABLE_PREFIX."mod_filter` WHERE `filter_name`='kitCommands'";
-            $check = $database->get_one($SQL);
-            if ($check != 'kitCommands') {
-                $SQL = "INSERT INTO `".CAT_TABLE_PREFIX."mod_filter` (`filter_name`, `module_name`, `filter_description`, `filter_code`, `filter_active`) ".
-                    "VALUES ('kitCommands', 'kit_framework', 'Enable the usage of kitCommands within BlackCat', '', 'Y');";
-                $database->query($SQL);
-                if ($database->is_error()) {
-                    throw new \Exception($database->get_error());
-                }
-            }
-            */
             require_once CAT_PATH.'/modules/blackcatFilter/filter.php';
             register_filter('kitCommands', 'kit_framework', 'Enable the usage of kitCommands within BlackCat');
         }
