@@ -344,7 +344,7 @@ class Setup
         $framework_config = array(
             'DEBUG' => false,
             'CACHE' => true,
-            'FRAMEWORK_TEMPLATES' => 'default'
+            'FRAMEWORK_TEMPLATES' => array('default')
         );
         if (file_exists(WB_PATH . '/kit2/config/framework.json')) {
             if (null == ($framework_config = (array) json_decode(file_get_contents(WB_PATH . '/kit2/config/framework.json', true))))
