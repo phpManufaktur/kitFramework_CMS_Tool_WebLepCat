@@ -12,6 +12,8 @@ namespace phpManufaktur\kitFramework;
 
 use phpManufaktur\kitFramework\unZip\unZip;
 use phpManufaktur\kitFramework\gitHub\gitHub;
+use phpManufaktur\kitFramework\JSON\JSONFormat;
+
 if (! defined('WB_PATH'))
     exit('Can\'t access this file directly!');
 
@@ -35,6 +37,8 @@ class Setup
     protected static $proxy_auth = CURLAUTH_BASIC;
     protected static $proxy_port = null;
     protected static $proxy_usrpwd = null;
+
+    protected $JSONFormat = null;
 
     const USERAGENT = 'kitFramework::Interface';
 
@@ -84,6 +88,9 @@ class Setup
             self::$proxy = $proxy['PROXY'];
             self::$proxy_port = $proxy['PROXYPORT'];
         }
+
+        // init the JSON formatter
+        $this->JSONFormat = new JSONFormat();
     } // __construct()
 
     /**
@@ -210,7 +217,7 @@ class Setup
                 'SMTP_PASSWORD' => WBMAILER_SMTP_PASSWORD
             );
         }
-        if (! file_put_contents(WB_PATH . '/kit2/config/swift.cms.json', json_encode($swift_config)))
+        if (! file_put_contents(WB_PATH . '/kit2/config/swift.cms.json', $this->JSONFormat->format($swift_config)))
             throw new \Exception('Can\'t write the configuration file for the SwiftMailer!');
         return true;
     } // createEMailConfiguration()
@@ -291,7 +298,7 @@ class Setup
                 'TABLE_PREFIX' => TABLE_PREFIX
             );
         }
-        if (! file_put_contents(WB_PATH . '/kit2/config/doctrine.cms.json', json_encode($doctrine_config)))
+        if (! file_put_contents(WB_PATH . '/kit2/config/doctrine.cms.json', $this->JSONFormat->format($doctrine_config)))
             throw new \Exception('Can\'t write the configuration file for Doctrine!');
         return true;
     } // createDoctrineConfiguration()
@@ -321,7 +328,7 @@ class Setup
         $cms_config['CMS_TYPE'] = self::$cms_type;
         $cms_config['CMS_VERSION'] = self::$cms_version;
 
-        if (! file_put_contents(WB_PATH . '/kit2/config/cms.json', json_encode($cms_config)))
+        if (! file_put_contents(WB_PATH . '/kit2/config/cms.json', $this->JSONFormat->format($cms_config)))
             throw new \Exception('Can\'t write the configuration file for the CMS!');
         return true;
     } // createCMSConfiguration()
@@ -347,7 +354,7 @@ class Setup
         $framework_config['FRAMEWORK_PATH'] = WB_PATH . '/kit2';
         $framework_config['FRAMEWORK_URL'] = WB_URL . '/kit2';
 
-        if (! file_put_contents(WB_PATH . '/kit2/config/framework.json', json_encode($framework_config)))
+        if (! file_put_contents(WB_PATH . '/kit2/config/framework.json', $this->JSONFormat->format($framework_config)))
             throw new \Exception('Can\'t write the Framework configuration file!');
         return true;
     } // updateFrameworkConfiguration()
