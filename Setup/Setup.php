@@ -327,6 +327,7 @@ class Setup
         $cms_config['CMS_ADMIN_URL'] = ADMIN_URL;
         $cms_config['CMS_TYPE'] = self::$cms_type;
         $cms_config['CMS_VERSION'] = self::$cms_version;
+        $cms_config['OUTPUT_FILTER']['METHOD'] = 'STANDARD';
 
         if (! file_put_contents(WB_PATH . '/kit2/config/cms.json', $this->JSONFormat->format($cms_config)))
             throw new \Exception('Can\'t write the configuration file for the CMS!');
