@@ -4,6 +4,10 @@
 Ralf Hertsch, Stockholmer Str. 31, 13359 Berlin (Germany)
 http://phpManufaktur.de - ralf.hertsch@phpManufaktur.de
 
+**0.26** - 2013-09-16
+
+* bugfix: added missing `require_once` for `JSONFormat` 
+
 **0.25** - 2013-09-16
 
 * removed obsolete code, added framework option CACHE
