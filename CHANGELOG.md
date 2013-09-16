@@ -4,6 +4,14 @@
 Ralf Hertsch, Stockholmer Str. 31, 13359 Berlin (Germany)
 http://phpManufaktur.de - ralf.hertsch@phpManufaktur.de
 
+**0.25** - 2013-09-16
+
+* removed obsolete code, added framework option CACHE
+* added JSON formatter for better readable *.json files
+* changed `FRAMEWORK_TEMPLATES` in `framework.json` from comma separated string to array
+* added hint for usage of `FallbackResource` instead of `mod_rewrite` in `.htaccess`
+* added config parameter `[OUTPUT_FILTER][METHOD]=STANDARD`
+
 **0.24** - 2013-08-16
 
 * added support for WebsiteBaker 2.8.4
