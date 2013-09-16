@@ -19,6 +19,7 @@ if (! defined('WB_PATH'))
 
 require_once WB_PATH . '/modules/kit_framework/Setup/unZip/unZip.php';
 require_once WB_PATH . '/modules/kit_framework/Setup/gitHub/gitHub.php';
+require_once WB_PATH . '/modules/kit_framework/Setup/JSON/JSONFormat.php';
 
 class Setup
 {
