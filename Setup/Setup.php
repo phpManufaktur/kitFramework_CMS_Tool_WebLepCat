@@ -128,11 +128,34 @@ class Setup
     protected function curlDownload ($source_url, $target_path, &$info = array())
     {
         try {
+
+            // first try to get the redirected URL
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $source_url);
+            curl_setopt($ch, CURLOPT_HEADER, true);
+            curl_setopt($ch, CURLOPT_FOLLOWLOCATION, false);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_USERAGENT, self::USERAGENT);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            if (!is_null(self::$proxy)) {
+                curl_setopt($ch, CURLOPT_PROXYAUTH, self::$proxy_auth);
+                curl_setopt($ch, CURLOPT_PROXY, self::$proxy);
+                curl_setopt($ch, CURLOPT_PROXYPORT, self::$proxy_port);
+                curl_setopt($ch, CURLOPT_PROXYUSERPWD, self::$proxy_usrpwd);
+            }
+            $header = curl_exec($ch);
+            curl_close($ch);
+            if (preg_match('#Location: (.*)#', $header, $redirect)) {
+                // this is the redirected URL
+                $source_url = trim($redirect[1]);
+            }
+
             // init cURL
             $ch = curl_init();
             // set the cURL options
             curl_setopt($ch, CURLOPT_URL, $source_url);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($ch, CURLOPT_FAILONERROR, true);
             curl_setopt($ch, CURLOPT_AUTOREFERER, true);
             curl_setopt($ch, CURLOPT_TIMEOUT, 1000);

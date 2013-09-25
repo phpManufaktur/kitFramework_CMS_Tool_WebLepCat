@@ -14,7 +14,7 @@ if (!defined('WB_PATH'))
 
 $url_status = true; (ini_get('allow_url_fopen') == 1);
 $curl_status = true; function_exists('curl_init');
-$version_check = (version_compare(PHP_VERSION, '5.3.3') < 0) ? false : true;
+$version_check = (version_compare(PHP_VERSION, '5.3.2') < 0) ? false : true;
 $server_software = explode('/', $_SERVER['SERVER_SOFTWARE']);
 $apache_installed = (strtoupper(substr($_SERVER['SERVER_SOFTWARE'], 0, 6)) == 'APACHE');
 
