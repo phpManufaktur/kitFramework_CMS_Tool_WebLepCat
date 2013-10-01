@@ -16,6 +16,7 @@ if (!function_exists('getURLbyPageID')) {
     function getURLbyPageID($page_id)
     {
         global $database;
+        global $post_id;
 
         if (defined('TOPIC_ID')) {
             // this is a TOPICS page
@@ -31,9 +32,10 @@ if (!function_exists('getURLbyPageID')) {
             return WB_URL . $topics_directory . $link . PAGE_EXTENSION;
         }
 
-        if (defined('POST_ID')) {
+        if (defined('POST_ID') || !is_null($post_id)) {
             // this is a NEWS page
-            $SQL = "SELECT `link` FROM `".TABLE_PREFIX."mod_news_posts` WHERE `post_id`='".POST_ID."'";
+            $id = defined('POST_ID') ? POST_ID : $post_id;
+            $SQL = "SELECT `link` FROM `".TABLE_PREFIX."mod_news_posts` WHERE `post_id`='$id'";
             $link = $database->get_one($SQL);
             if ($database->is_error()) {
                 trigger_error(sprintf('[%s - %s] %s', __FUNCTION__, __LINE__, $database->get_error()), E_USER_ERROR);
