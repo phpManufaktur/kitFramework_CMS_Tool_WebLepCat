@@ -454,9 +454,9 @@ class Setup
         $backup = WB_PATH . '/modules/output_filter/original-kitframework-filter-routines.php';
 
         $addline = "\n\n\t\t// exec kitFramework filter";
-        $addline .= "\n\t\tif (file_exists(WB_PATH.'/kit2/extension/phpmanufaktur/phpManufaktur/Basic/Control/CMS/WebsiteBaker/OutputFilter.php')) { ";
-        $addline .= "\n\t\t\trequire_once (WB_PATH.'/kit2/extension/phpmanufaktur/phpManufaktur/Basic/Control/CMS/WebsiteBaker/OutputFilter.php'); ";
-        $addline .= "\n\t\t\t" . '$cmsOutputFilter = new \phpManufaktur\Basic\Control\CMS\WebsiteBaker\OutputFilter(); ';
+        $addline .= "\n\t\tif (file_exists(WB_PATH.'/kit2/extension/phpmanufaktur/phpManufaktur/Basic/Control/CMS/OutputFilter.php')) { ";
+        $addline .= "\n\t\t\trequire_once (WB_PATH.'/kit2/extension/phpmanufaktur/phpManufaktur/Basic/Control/CMS/OutputFilter.php'); ";
+        $addline .= "\n\t\t\t" . '$cmsOutputFilter = new \phpManufaktur\Basic\Control\CMS\OutputFilter(); ';
         $addline .= "\n\t\t\t" . '$content = $cmsOutputFilter->parse($content); ';
         $addline .= "\n\t\t}\n\n ";
 
