@@ -4,6 +4,10 @@
 Ralf Hertsch, Stockholmer Str. 31, 13359 Berlin (Germany)
 http://phpManufaktur.de - ralf.hertsch@phpManufaktur.de
 
+**0.29** - 2013-10-06
+
+* bugfix: namespace for LEPTON output_interface was wrong
+
 **0.28** - 2013-10-06
 
 * changed search function and `kit_framework_search` addon

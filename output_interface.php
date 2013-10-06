@@ -9,7 +9,7 @@
  * @license MIT License (MIT) http://www.opensource.org/licenses/MIT
  */
 
-use phpManufaktur\Basic\Control\kitCommand\OutputFilter;
+use phpManufaktur\Basic\Control\CMS\LEPTON\OutputFilter;
 
 $filter_path = WB_PATH.'/kit2/extension/phpmanufaktur/phpManufaktur/Basic/Control/CMS/LEPTON/OutputFilter.php';
 if (file_exists($filter_path)) {
