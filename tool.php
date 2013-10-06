@@ -11,9 +11,11 @@
 
 use phpManufaktur\kitFramework\Setup;
 
-if (!defined('WB_PATH'))
+if (!defined('WB_PATH')) {
   exit('Can\'t access this file directly!');
+}
 
+// no autoloading at this point!
 require_once WB_PATH.'/modules/kit_framework/Setup/Setup.php';
 
 if (!file_exists(WB_PATH.'/modules/kit_framework/languages/'.LANGUAGE.'.php'))
@@ -27,12 +29,16 @@ class Tool {
 
     protected static $action = null;
 
-    public function __construct() {
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
         self::$action = (isset($_REQUEST['action'])) ? $_REQUEST['action'] : 'NONE';
-    } // __construct()
+    }
 
-    public function exec() {
-
+    public function exec()
+    {
         if (!file_exists(WB_PATH.'/kit2')) {
             // start the install procedere
             if (self::$action == 'install') {
@@ -74,28 +80,25 @@ class Tool {
         }
         else {
             // nothing else to do, so we call the kitFramework
-        global $database;
+            global $database;
 
-        // check the search function
-        Setup::checkSearch();
+            if (null === ($pwd = $database->get_one("SELECT `password` FROM `".TABLE_PREFIX."users` WHERE `username`='".$_SESSION['USERNAME']."'", MYSQL_ASSOC)))
+                throw new Exception($database->get_error());
 
-        if (null === ($pwd = $database->get_one("SELECT `password` FROM `".TABLE_PREFIX."users` WHERE `username`='".$_SESSION['USERNAME']."'", MYSQL_ASSOC)))
-            throw new Exception($database->get_error());
+            $cms_info = array(
+                'type' => defined('LEPTON_VERSION') ? 'LEPTON' : 'WebsiteBaker',
+                'version' => defined('LEPTON_VERSION') ? LEPTON_VERSION : WB_VERSION,
+                'locale' => strtolower(LANGUAGE),
+                'username' => $_SESSION['USERNAME'],
+                'authentication' => $pwd,
+                'target' => 'cms'
+            );
 
-        $cms_info = array(
-            'type' => defined('LEPTON_VERSION') ? 'LEPTON' : 'WebsiteBaker',
-            'version' => defined('LEPTON_VERSION') ? LEPTON_VERSION : WB_VERSION,
-            'locale' => strtolower(LANGUAGE),
-            'username' => $_SESSION['USERNAME'],
-            'authentication' => $pwd,
-            'target' => 'cms'
-        );
+            $iframe_source = WB_URL.'/kit2/welcome/cms/'.base64_encode(json_encode($cms_info));
 
-        $iframe_source = WB_URL.'/kit2/welcome/cms/'.base64_encode(json_encode($cms_info));
-
-        $cms_info['target'] = 'framework';
-        $framework_url = WB_URL.'/kit2/welcome/cms/'.base64_encode(json_encode($cms_info));
-        $expand_img = WB_URL.'/kit2/extension/phpmanufaktur/phpManufaktur/Basic/Template/default/framework/image/expand_10x10.png';
+            $cms_info['target'] = 'framework';
+            $framework_url = WB_URL.'/kit2/welcome/cms/'.base64_encode(json_encode($cms_info));
+            $expand_img = WB_URL.'/kit2/extension/phpmanufaktur/phpManufaktur/Basic/Template/default/framework/image/expand_10x10.png';
 
 return <<<EOD
     <div style="width:100%;height:10px;margin:0 0 2px 0;padding:0;text-align:right;">
@@ -111,9 +114,9 @@ return <<<EOD
     </div>
 EOD;
         }
-    } // exec()
+    }
 
-} // class Tool
+}
 
 try {
     $Tool = new Tool();
