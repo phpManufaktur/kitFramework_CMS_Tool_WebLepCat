@@ -13,7 +13,12 @@ if (!defined('WB_PATH')) {
   header("Location: ../../index.php");
 }
 
-
+/**
+ * Connect the CMS search function with the kitFramework search filter
+ *
+ * @param array $search
+ * @return boolean
+ */
 function kit_framework_search_search($search)
 {
     if (file_exists(WB_PATH.'/kit2/extension/phpmanufaktur/phpManufaktur/Basic/Control/CMS/SearchFilter.php')) {
