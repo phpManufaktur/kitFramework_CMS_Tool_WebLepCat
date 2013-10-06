@@ -9,13 +9,14 @@
  * @license MIT License (MIT) http://www.opensource.org/licenses/MIT
  */
 
-if (!defined('WB_PATH'))
-	exit('Can\'t access this file directly!');
+if (!defined('WB_PATH')) {
+    exit('Can\'t access this file directly!');
+}
 
 $module_directory     = 'kit_framework_search';
 $module_name          = 'kitFramework Search';
 $module_function      = 'page';
-$module_version       = '0.10';
+$module_version       = '0.11';
 $module_status        = 'Beta';
 $module_platform      = '2.8';
 $module_author        = 'Ralf Hertsch, Berlin (Germany)';
