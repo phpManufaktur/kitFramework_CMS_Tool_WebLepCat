@@ -43,6 +43,11 @@ class Setup
 
     const USERAGENT = 'kitFramework::Interface';
 
+    /**
+     * Constructor
+     *
+     * @throws \Exception
+     */
     public function __construct ()
     {
         // increase the max. exexcution time
@@ -435,11 +440,11 @@ class Setup
 
         // windows
         if (! preg_match('/^[a-z]\:/i', $new_path)) {
-        $new_path = '/' . $new_path;
-    }
+            $new_path = '/' . $new_path;
+        }
 
-    return $new_path;
-    } // sanitizePath()
+        return $new_path;
+    }
 
     /**
      * Patch the WebsiteBaker output filter
@@ -778,6 +783,11 @@ class Setup
         return true;
     }
 
+    /**
+     * Check the CMS search function, install the kit_framework_search addon
+     *
+     * @throws \Exception
+     */
     public static function checkSearch()
     {
         global $database;
@@ -862,6 +872,6 @@ class Setup
                 @copy(WB_PATH.'/modules/kit_framework/proxy.json', WB_PATH.'/kit2/config/proxy.json');
             }
         }
-    } // exec()
+    }
 
-} // class setup
+}
