@@ -1,4 +1,4 @@
-### kitFramework
+### kitFramework CMS Tool
 
 (c) 2013 by phpManufaktur
 Ralf Hertsch, Stockholmer Str. 31, 13359 Berlin (Germany)
