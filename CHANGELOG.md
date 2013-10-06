@@ -4,6 +4,10 @@
 Ralf Hertsch, Stockholmer Str. 31, 13359 Berlin (Germany)
 http://phpManufaktur.de - ralf.hertsch@phpManufaktur.de
 
+**0.28** - 2013-10-06
+
+* changed search function and `kit_framework_search` addon
+
 **0.27** - 2013-09-25
 
 * changed access to redirected Github repositories

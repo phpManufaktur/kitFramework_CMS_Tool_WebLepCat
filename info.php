@@ -9,13 +9,14 @@
  * @license MIT License (MIT) http://www.opensource.org/licenses/MIT
  */
 
-if (!defined('WB_PATH'))
+if (!defined('WB_PATH')) {
     exit('Can\'t access this file directly!');
+}
 
 $module_directory     = 'kit_framework';
 $module_name          = 'kitFramework CMS Tool';
 $module_function      = 'tool';
-$module_version       = '0.27';
+$module_version       = '0.28';
 $module_status        = 'Stable';
 $module_platform      = '2.8';
 $module_author        = 'Ralf Hertsch, Berlin (Germany)';
