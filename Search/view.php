@@ -9,7 +9,8 @@
  * @license MIT License (MIT) http://www.opensource.org/licenses/MIT
  */
 
-if (!defined('WB_PATH'))
+if (!defined('WB_PATH')) {
   header("Location: ../../index.php");
+}
 
 // nothing to do ...

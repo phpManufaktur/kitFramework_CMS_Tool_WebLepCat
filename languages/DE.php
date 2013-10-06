@@ -9,8 +9,9 @@
  * @license MIT License (MIT) http://www.opensource.org/licenses/MIT
  */
 
-if (!defined('WB_PATH'))
+if (!defined('WB_PATH')) {
   exit('Can\'t access this file directly!');
+}
 
 if ('á' != "\xc3\xa1") {
   // important: language files must be saved as UTF-8 (without BOM)

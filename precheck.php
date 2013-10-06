@@ -9,8 +9,9 @@
  * @license MIT License (MIT) http://www.opensource.org/licenses/MIT
  */
 
-if (!defined('WB_PATH'))
+if (!defined('WB_PATH')) {
     exit('Can\'t access this file directly!');
+}
 
 $url_status = true; (ini_get('allow_url_fopen') == 1);
 $curl_status = true; function_exists('curl_init');
