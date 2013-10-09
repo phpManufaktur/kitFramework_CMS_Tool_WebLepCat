@@ -16,7 +16,7 @@ if (!defined('WB_PATH')) {
 $module_directory     = 'kit_framework';
 $module_name          = 'kitFramework CMS Tool';
 $module_function      = 'tool';
-$module_version       = '0.29';
+$module_version       = '0.30';
 $module_status        = 'Stable';
 $module_platform      = '2.8';
 $module_author        = 'Ralf Hertsch, Berlin (Germany)';
