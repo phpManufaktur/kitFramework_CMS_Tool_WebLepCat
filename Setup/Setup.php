@@ -510,6 +510,9 @@ class Setup
         elseif (defined('CAT_VERSION')) {
             // register the filter at the blackcatFilter
             require_once CAT_PATH.'/modules/blackcatFilter/filter.php';
+            // first unregister to prevent trouble at re-install
+            unregister_filter('kitCommands', 'kit_framework');
+            // register the filter
             register_filter('kitCommands', 'kit_framework', 'Enable the usage of kitCommands within BlackCat');
         }
         else {
@@ -533,6 +536,49 @@ class Setup
         return true;
     } // addFilter()
 
+    /**
+     * Copy a file, or recursively copy a folder and its contents
+     *
+     * @param string $source Source path
+     * @param string $dest Destination path
+     * @param string $permissions New folder creation permissions
+     * @return bool Returns true on success, false on failure
+     *
+     * @author <http://stackoverflow.com/a/12763962/2243419>
+     */
+    public static function xcopy($source, $dest, $permissions = 0755)
+    {
+        // Check for symlinks
+        if (is_link($source)) {
+            return symlink(readlink($source), $dest);
+        }
+
+        // Simple copy for a file
+        if (is_file($source)) {
+            return copy($source, $dest);
+        }
+
+        // Make destination directory
+        if (!is_dir($dest)) {
+            mkdir($dest, $permissions);
+        }
+
+        // Loop through the folder
+        $dir = dir($source);
+        while (false !== $entry = $dir->read()) {
+            // Skip pointers
+            if ($entry == '.' || $entry == '..') {
+                continue;
+            }
+
+            // Deep copy directories
+            self::xcopy("$source/$entry", "$dest/$entry");
+        }
+
+        // Clean up
+        $dir->close();
+        return true;
+    }
 
     /**
      * Download and configure the kitFramework

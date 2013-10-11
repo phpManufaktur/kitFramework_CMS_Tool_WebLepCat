@@ -4,6 +4,10 @@
 Ralf Hertsch, Stockholmer Str. 31, 13359 Berlin (Germany)
 http://phpManufaktur.de - ralf.hertsch@phpManufaktur.de
 
+**0.32** - 2013-10-11
+
+* bugfix: forgot xcopy() command ... 
+
 **0.31** - 2013-10-11
 
 * bugfix: wrong namespace for output filter at BlackCat CMS
