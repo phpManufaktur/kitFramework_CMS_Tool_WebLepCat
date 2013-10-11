@@ -4,6 +4,11 @@
 Ralf Hertsch, Stockholmer Str. 31, 13359 Berlin (Germany)
 http://phpManufaktur.de - ralf.hertsch@phpManufaktur.de
 
+**0.31** - 2013-10-11
+
+* bugfix: wrong namespace for output filter at BlackCat CMS
+* changed: moved the handling of the kitFramework Search Function to BASIC
+
 **0.30** - 2013-10-09
 
 * bugfix: the precheck enabled a installation at PHP 5.3.2 but the kitFramework really need PHP 5.3.3 at minimum.
