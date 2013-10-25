@@ -85,9 +85,26 @@ class Tool {
             if (null === ($pwd = $database->get_one("SELECT `password` FROM `".TABLE_PREFIX."users` WHERE `username`='".$_SESSION['USERNAME']."'", MYSQL_ASSOC)))
                 throw new Exception($database->get_error());
 
+            if (defined('LEPTON_VERSION')) {
+                $cms_type = 'LEPTON';
+                $cms_version = LEPTON_VERSION;
+            }
+            elseif (defined('CAT_VERSION')) {
+                $cms_type = 'BlackCat';
+                $cms_version = CAT_VERSION;
+            }
+            else {
+                $cms_type = 'WebsiteBaker';
+                $cms_version = WB_VERSION;
+                // fix for WB 2.8.4
+                if (($cms_version == '2.8.3') && file_exists(WB_PATH.'/setup.ini.php')) {
+                    $cms_version = '2.8.4';
+                }
+            }
+
             $cms_info = array(
-                'type' => defined('LEPTON_VERSION') ? 'LEPTON' : 'WebsiteBaker',
-                'version' => defined('LEPTON_VERSION') ? LEPTON_VERSION : WB_VERSION,
+                'type' => $cms_type,
+                'version' => $cms_version,
                 'locale' => strtolower(LANGUAGE),
                 'username' => $_SESSION['USERNAME'],
                 'authentication' => $pwd,

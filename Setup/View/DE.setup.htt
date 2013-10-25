@@ -6,6 +6,7 @@
     <p>Dieses Admin-Tool verbindet Ihr Content Management System mit dem kitFramework und stellt Ihnen zusätzliche Anwendungsprogramme sowie Hilfsmittel zur Verfügung.</p>
     <p>Anwendungen des kitFramework lassen sich ganz einfach per Klick installieren und wieder entfernen.</p>
     <p>Das Framework selbst ist recht umfangreich und wird deshalb direkt von GitHub heruntergeladen, entpackt und installiert - der gesamte Vorgang wird nur wenige Augenblicke in Anspruch nehmen.</p>
+    <p><i>Sie verwenden einen Proxy oder wünschen weitere Informationen vor der Installation?</i> Das <a href="https://github.com/phpManufaktur/kitFramework/wiki/kitFramework-%23-Installation" target="_blank">kitFramework WIKI</a> hilft Ihnen weiter!</p>
     <p><input type="button" value="Framework installieren" onclick="javascript:window.location='{{ setup_url }}';" /></p>
   </div>
   <div class="kit_clear"></div>
