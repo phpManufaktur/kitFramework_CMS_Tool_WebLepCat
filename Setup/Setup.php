@@ -97,7 +97,7 @@ class Setup
 
         // init the JSON formatter
         $this->JSONFormat = new JSONFormat();
-    } // __construct()
+    }
 
     /**
      * Get the kitFramework version (release) number
@@ -107,7 +107,7 @@ class Setup
     public function getKitFrameworkVersion ()
     {
         return self::$kitFramework_version;
-    } // getKitFrameworkVersion()
+    }
 
     /**
      * Check the possible download methods
@@ -121,7 +121,7 @@ class Setup
         } else {
             throw new \Exception('cURL is not enabled, can\'t download files from GitHub!');
         }
-    } // checkDownloadMethod()
+    }
 
     /**
      * Download a file with cURL
@@ -198,7 +198,7 @@ class Setup
         } catch (\Exception $e) {
             throw new \Exception($e->getMessage());
         }
-    } // curlDownload()
+    }
 
     /**
      * The kitFramework need a valid SMTP email configuration
@@ -215,7 +215,7 @@ class Setup
             // the mailer routine must be 'smtp' and authentication 'true' (LEPTON) or '1' (WB)
             return ((WBMAILER_ROUTINE == 'smtp') && ((WBMAILER_SMTP_AUTH == 'true') || (WBMAILER_SMTP_AUTH == '1')));
         }
-    } // checkEMailSettings()
+    }
 
     /**
      * Get the E-Mail settings from the CMS and write them to the Swift configuration file.
@@ -249,7 +249,7 @@ class Setup
         if (! file_put_contents(WB_PATH . '/kit2/config/swift.cms.json', $this->JSONFormat->format($swift_config)))
             throw new \Exception('Can\'t write the configuration file for the SwiftMailer!');
         return true;
-    } // createEMailConfiguration()
+    }
 
     /**
      * Generate a random password of $length
@@ -268,7 +268,7 @@ class Setup
             $password .= $tmp;
         }
         return $password;
-    } // generatePassword()
+    }
 
     /**
      * Generate a random password of $length
@@ -285,7 +285,7 @@ class Setup
         if (! file_put_contents($directory_path . '/.htpasswd', $data))
             throw new \Exception('Can\'t write .htpasswd for directory protection!');
         return true;
-    } // createProtection
+    }
 
     /**
      * Get the database settings from the CMS and write them to the Doctrine config file.
@@ -330,7 +330,7 @@ class Setup
         if (! file_put_contents(WB_PATH . '/kit2/config/doctrine.cms.json', $this->JSONFormat->format($doctrine_config)))
             throw new \Exception('Can\'t write the configuration file for Doctrine!');
         return true;
-    } // createDoctrineConfiguration()
+    }
 
     /**
      * Get the basic settings of the CMS and create or update the CMS configuration file of the framework
@@ -361,7 +361,7 @@ class Setup
         if (! file_put_contents(WB_PATH . '/kit2/config/cms.json', $this->JSONFormat->format($cms_config)))
             throw new \Exception('Can\'t write the configuration file for the CMS!');
         return true;
-    } // createCMSConfiguration()
+    }
 
     /**
      * Update the framework configuration file with FRAMEWORK_PATH and FRAMEWORK_URL
@@ -381,13 +381,12 @@ class Setup
                 throw new \Exception("Can't read the Framework configuration file!");
         }
 
-        $framework_config['FRAMEWORK_PATH'] = WB_PATH . '/kit2';
         $framework_config['FRAMEWORK_URL'] = WB_URL . '/kit2';
 
         if (! file_put_contents(WB_PATH . '/kit2/config/framework.json', $this->JSONFormat->format($framework_config)))
             throw new \Exception('Can\'t write the Framework configuration file!');
         return true;
-    } // updateFrameworkConfiguration()
+    }
 
     /**
      * Check if the WebsiteBaker output filter is already patched
@@ -404,7 +403,7 @@ class Setup
                     return true;
         }
         return false;
-    } // websiteBakerIsPatched()
+    }
 
     /**
      * fixes a path by removing //, /../ and other things
@@ -701,7 +700,7 @@ class Setup
 
         // create directory protection
         $this->createProtection(WB_PATH . '/kit2/media/protected');
-    } // downloadAndConfigTheFramework()
+    }
 
     /**
      * Download and install the kitFramework Basic extension
@@ -783,7 +782,7 @@ class Setup
         // clean up the temporary directory
         @array_map('unlink', glob(self::sanitizePath(WB_PATH . '/temp/unzip/*')));
 
-    } // downloadAndConfigTheBasicExtension()
+    }
 
     /**
      * Execute the Setup, download kitFramework, unzip and start the framework
