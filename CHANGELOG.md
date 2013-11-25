@@ -4,6 +4,10 @@
 Ralf Hertsch, Stockholmer Str. 31, 13359 Berlin (Germany)
 http://phpManufaktur.de - ralf.hertsch@phpManufaktur.de
 
+**0.34** - 2013-11-25
+
+* extended precheck.php with check for MySQL InnoDB support
+
 **0.33** - 2013-10-25
 
 * improved CMS type and version detecting

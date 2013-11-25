@@ -13,6 +13,8 @@ if (!defined('WB_PATH')) {
     exit('Can\'t access this file directly!');
 }
 
+global $database;
+
 $url_status = true; (ini_get('allow_url_fopen') == 1);
 $curl_status = true; function_exists('curl_init');
 $version_check = (version_compare(PHP_VERSION, '5.3.3') < 0) ? false : true;
@@ -24,19 +26,25 @@ $bc_filter_installed = true;
 if (defined('CAT_VERSION')) {
     if (!file_exists(CAT_PATH.'/modules/blackcatFilter/filter.php')) {
         $bc_filter_installed = false;
-        $blackCat = 'blackcatFilter must be installed<br />';
+        $blackCat = 'BlackCat OutputFilter must be installed<br />';
     }
 }
 
-if (!$version_check || !$url_status || !$curl_status || !$apache_installed || !$bc_filter_installed) {
-    $required =
+$SQL = "SELECT SUPPORT FROM INFORMATION_SCHEMA.ENGINES WHERE ENGINE = 'InnoDB'";
+if (null == ($inno_check = $database->get_one($SQL))) {
+    trigger_error($database->get_error(), E_USER_ERROR);
+}
+$innoDB_available = ($inno_check != 'NO');
+
+if (!$version_check || !$url_status || !$curl_status || !$apache_installed || !$bc_filter_installed || !$innoDB_available) {
   $PRECHECK['CUSTOM_CHECKS'] = array(
       'Server configuration' => array(
           'REQUIRED' => "Needed configuration:<br />".
                   "PHP version >= 5.3.3<br />Server software: APACHE<br />".
-                  "cURL extension installed<br />php.ini setting: allow_url_fopen == 1<br />.$blackCat",
-          'ACTUAL' => 'Please check the server configuration!<br /><br />For further informations and support please contact '.
-                  'the <a href="https://support.phpmanufaktur.de" target="_blank">phpManufaktur Addons Support Group</a>.',
+                  "cURL extension installed<br />php.ini setting: allow_url_fopen = 1<br />$blackCat".
+                  "MySQL InnoDB service must be available<br />",
+          'ACTUAL' => 'Please check the server configuration!<br /><br />For further information and support please contact '.
+                  'the <a href="https://support.phpmanufaktur.de" target="_blank">phpManufaktur Support Group</a>.',
           'STATUS' => false
           )
       );
