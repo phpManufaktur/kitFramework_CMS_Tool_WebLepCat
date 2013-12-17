@@ -4,6 +4,10 @@
 Ralf Hertsch, Stockholmer Str. 31, 13359 Berlin (Germany)
 http://phpManufaktur.de - ralf.hertsch@phpManufaktur.de
 
+**0.36** - 2013-12-17 
+
+* changed the backend look and feel to responsive Bootstrap 3 
+
 **0.35** - 2013-12-01
 
 * extended `precheck.php` with check for MySQL version `>= 5.0.3`
