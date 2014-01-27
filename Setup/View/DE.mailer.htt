@@ -4,7 +4,7 @@
   </div>
   <div class="kit_setup_info">
     <p><b>kitFramework</b> kann die Installation nicht durchführen, da die E-Mail Einstellungen des CMS nicht übernommen werden können.</p>
-    <p>Das <b>kitFramework</b> erfordert korrekt konfigurierte <b>SMTP</b> VErbindung mit Authentifizierung. Momentan haben Sie <b>PHP MAIL</b> als Verfahren für das Versenden von E-Mails eingestellt. Dieses Verfahren ist sehr unzuverlässig und die meisten E-Mail Server werden empfangene E-Mails als SPAM zurückweisen.</p>
+    <p>Das <b>kitFramework</b> erfordert eine korrekt konfigurierte <b>SMTP</b> Verbindung mit Authentifizierung. Momentan haben Sie <b>PHP MAIL</b> als Verfahren für das Versenden von E-Mails eingestellt. Dieses Verfahren ist sehr unzuverlässig und die meisten E-Mail Server werden empfangene E-Mails als SPAM zurückweisen.</p>
     <p>Bitte überprüfen Sie die E-Mail Einstellungen und rufen Sie anschließend diesen Dialog wieder auf!</p>
     <p><input type="button" value="Zu den CMS Einstellungen" onclick="javascript:window.location='{{ settings_url }}';" /></p>
   </div>
