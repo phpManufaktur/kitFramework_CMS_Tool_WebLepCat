@@ -4,6 +4,10 @@
 Ralf Hertsch, Stockholmer Str. 31, 13359 Berlin (Germany)
 http://phpManufaktur.de - ralf.hertsch@phpManufaktur.de
 
+**0.37** - 2014-02-03
+
+* added `framework_info.php` 
+
 **0.36** - 2013-12-17 
 
 * changed the backend look and feel to responsive Bootstrap 3 
