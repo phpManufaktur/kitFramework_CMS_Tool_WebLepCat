@@ -4,6 +4,10 @@
 Ralf Hertsch, Stockholmer Str. 31, 13359 Berlin (Germany)
 http://phpManufaktur.de - ralf.hertsch@phpManufaktur.de
 
+**0.38** - 2014-04-28
+
+* solved problem with exceeded download limit at Github
+
 **0.37** - 2014-02-03
 
 * added `framework_info.php` 
