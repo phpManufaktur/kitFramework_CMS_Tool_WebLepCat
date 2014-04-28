@@ -4,7 +4,7 @@
 Ralf Hertsch, Stockholmer Str. 31, 13359 Berlin (Germany)
 http://phpManufaktur.de - ralf.hertsch@phpManufaktur.de
 
-**0.38** - 2014-04-28
+**0.39** - 2014-04-28
 
 * solved problem with exceeded download limit at Github
 
