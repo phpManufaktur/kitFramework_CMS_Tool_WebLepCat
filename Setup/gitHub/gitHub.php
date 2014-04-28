@@ -56,6 +56,9 @@ class gitHub {
         curl_setopt($ch, CURLOPT_USERAGENT, self::USERAGENT);
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+
+        curl_setopt($ch, CURLOPT_USERPWD, "fd881e98b9f76fcd9f4d80e8c1cfca68ee9e35b4:x-oauth-basic");
+
         if (!is_null(self::$proxy)) {
             curl_setopt($ch, CURLOPT_PROXYAUTH, self::$proxy_auth);
             curl_setopt($ch, CURLOPT_PROXY, self::$proxy);
@@ -72,6 +75,37 @@ class gitHub {
         $result = json_decode($result, true);
         return (!isset($info['http_code']) || ($info['http_code'] != '200')) ? false : true;
     } // gitGet()
+
+
+    protected function authenticate()
+    {
+        $command = "https://api.github.com/user";
+        if (false === ($ch = curl_init($command))) {
+            throw new \Exception('Got no handle for cURL!');
+        }
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_USERAGENT, self::USERAGENT);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+
+        curl_setopt($ch, CURLOPT_USERPWD, "fd881e98b9f76fcd9f4d80e8c1cfca68ee9e35b4:x-oauth-basic");
+
+        if (!is_null(self::$proxy)) {
+            curl_setopt($ch, CURLOPT_PROXYAUTH, self::$proxy_auth);
+            curl_setopt($ch, CURLOPT_PROXY, self::$proxy);
+            curl_setopt($ch, CURLOPT_PROXYPORT, self::$proxy_port);
+            curl_setopt($ch, CURLOPT_PROXYUSERPWD, self::$proxy_usrpwd);
+        }
+        if (false === ($result = curl_exec($ch))) {
+            throw new \Exception(curl_error($ch));
+        }
+        if (!curl_errno($ch)) {
+            $info = curl_getinfo($ch);
+        }
+        curl_close($ch);
+        $result = json_decode($result, true);
+        return (!isset($info['http_code']) || ($info['http_code'] != '200')) ? false : true;
+    }
 
     /**
      * Get the tags for the $repository and return the last one in $last_tag.
@@ -90,7 +124,8 @@ class gitHub {
         $result = array();
         $info = array();
 
-        if (!$this->get($command, $result, $info)) {
+        //if (!$this->get($command, $result, $info)) {
+        if (!$this->authenticate() || !$this->get($command, $result, $info)) {
             if (isset($info['http_code']) && isset($result['message']))
                 $error_message = sprintf('[GitHub Error] HTTP Code: %s - %s', $info['http_code'], $result['message']);
             elseif (isset($info['http_code']))
@@ -99,6 +134,7 @@ class gitHub {
                 $error_message = '[GitHub Error] Unknown connection error, got no result!';
             throw new \Exception($error_message);
         }
+
 
         // no result?
         if (count($result) < 1) return false;
