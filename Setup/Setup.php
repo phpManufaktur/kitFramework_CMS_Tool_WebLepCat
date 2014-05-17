@@ -211,11 +211,10 @@ class Setup
     public function checkEMailSettings ()
     {
         if (self::$cms_type == 'BlackCat') {
-            return ((CATMAILER_ROUTINE == 'smtp') && ((CATMAILER_SMTP_AUTH == 'true') || (CATMAILER_SMTP_AUTH == '1')));
+            return ((CATMAILER_ROUTINE == 'smtp') && (CATMAILER_SMTP_USERNAME != '') && (CATMAILER_SMTP_PASSWORD != ''));
         }
         else {
-            // the mailer routine must be 'smtp' and authentication 'true' (LEPTON) or '1' (WB)
-            return ((WBMAILER_ROUTINE == 'smtp') && ((WBMAILER_SMTP_AUTH == 'true') || (WBMAILER_SMTP_AUTH == '1')));
+            return ((WBMAILER_ROUTINE == 'smtp') && (WBMAILER_SMTP_USERNAME != '') && (WBMAILER_SMTP_PASSWORD != ''));
         }
     }
 
