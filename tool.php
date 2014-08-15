@@ -118,16 +118,18 @@ class Tool {
             $expand_img = WB_URL.'/kit2/extension/phpmanufaktur/phpManufaktur/Basic/Template/default/framework/image/kitframework_15x14.png';
 
 return <<<EOD
-    <div style="width:100%;height:15px;margin:5px 0;padding:0;text-align:right;">
-        <a href="$framework_url" target="_blank">
-            <img src="$expand_img" width="15" height="14" alt="Open in kitFramework" title="Open in kitFramework" />
-        </a>
-    </div>
-    <iframe id="kitframework_iframe" width="100%" height="700" src="$iframe_source" frameborder="0" style="border:none;">
-        <p>Sorry, but your browser does not support embedded frames!</p>
-    </iframe>
-    <div style="font-size:10px;text-align:right;margin:2px 0 0 0;padding:0;">
-        <a href="https://kit2.phpmanufaktur.de" target="_blank">kitFramework by phpManufaktur</a>
+    <div style="width:100%;margin:0;padding:5px;color:#000;background-color:#fff;">
+        <div style="width:100%;height:15px;margin:5px 0;padding:0;text-align:right;">
+            <a href="$framework_url" target="_blank">
+                <img src="$expand_img" width="15" height="14" alt="Open in kitFramework" title="Open in kitFramework" />
+            </a>
+        </div>
+        <iframe id="kitframework_iframe" width="100%" height="700" src="$iframe_source" frameborder="0" style="border:none;">
+            <p>Sorry, but your browser does not support embedded frames!</p>
+        </iframe>
+        <div style="font-size:10px;text-align:right;margin:2px 0 0 0;padding:0;">
+            <a href="https://kit2.phpmanufaktur.de" target="_blank">kitFramework by phpManufaktur</a>
+        </div>
     </div>
 EOD;
         }
