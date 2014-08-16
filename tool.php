@@ -117,6 +117,11 @@ class Tool {
             $framework_url = WB_URL.'/kit2/welcome/cms/'.base64_encode(json_encode($cms_info));
             $expand_img = WB_URL.'/kit2/extension/phpmanufaktur/phpManufaktur/Basic/Template/default/framework/image/kitframework_15x14.png';
 
+            $toggle_pagetree = '';
+            if (defined('CAT_VERSION')) {
+              $toggle_pagetree = '<script type="text/javascript">$(document).ready(function() { togglePageTree(); });</script>';
+            }
+
 return <<<EOD
     <div style="width:100%;margin:0;padding:5px;color:#000;background-color:#fff;">
         <div style="width:100%;height:15px;margin:5px 0;padding:0;text-align:right;">
@@ -131,6 +136,7 @@ return <<<EOD
             <a href="https://kit2.phpmanufaktur.de" target="_blank">kitFramework by phpManufaktur</a>
         </div>
     </div>
+    $toggle_pagetree
 EOD;
         }
     }
