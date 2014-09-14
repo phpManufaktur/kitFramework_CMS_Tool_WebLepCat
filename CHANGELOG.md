@@ -4,6 +4,12 @@
 Ralf Hertsch, Stockholmer Str. 31, 13359 Berlin (Germany)
 http://phpManufaktur.de - ralf.hertsch@phpManufaktur.de
 
+**0.41** - 2014-09-14
+
+* Changed formatting within the `tool.php` to grant that the background is always white and the extensions have a padding of 5px around to the CMS
+* enable the CMS Tool to toggle the page tree in BlackCat installations
+* process the finishing update for installing new kitFramework releases
+
 **0.40** - 2014-05-17
 
 * changed check for SMTP to compensate a problem with LEPTON CMS settings
