@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="{{ LOCALE }}">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta charset="utf-8" />
+    <title>kitFramework Update</title>
+    <meta name="robots" content="noindex,nofollow" />
+    <meta name="language" content="{{ LOCALE }}" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content="kitFramework (https://kit2.phpmanufaktur.de)" />
+    <link rel="stylesheet" type="text/css" href="{{ CMS_URL }}/kit2/extension/phpmanufaktur/phpManufaktur/Library/Library/bootstrap/latest/css/bootstrap.min.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="{{ CMS_URL }}/kit2/extension/phpmanufaktur/phpManufaktur/Library/Library/font-awesome/latest/css/font-awesome.min.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="{{ CMS_URL }}/modules/kit_framework/Update/kitFramework/css/update.css" media="screen" />
+    <!--[if lt IE 9]>
+      <script type="text/javascript" src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script type="text/javascript" src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+    <link rel="shortcut icon" type="image/x-icon" href="{{ CMS_URL }}/kit2/extension/phpmanufaktur/phpManufaktur/Basic/Template/default/framework/image/favicon.ico" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>kitFramework Update</h1>
+      
+      <div class="alert {{ ALERT_TYPE }}">
+        <a class="close" data-dismiss="alert" href="#" aria-hidden="true">&times;</a>
+        {{ ALERT_CONTENT }}        
+      </div>
+      
+      <a href="{{ RETURN_URL }}" class="btn btn-primary btn-large" role="button"><i class="fa fa-hand-o-right"></i> kitFramework CMS Tool</a>
+    
+    </div>    
+    
+    <script type="text/javascript" src="{{ CMS_URL }}/kit2/extension/phpmanufaktur/phpManufaktur/Library/Library/jquery/jquery/latest/jquery.min.js"></script>
+    <script type="text/javascript" src="{{ CMS_URL }}/kit2/extension/phpmanufaktur/phpManufaktur/Library/Library/bootstrap/latest/js/bootstrap.min.js"></script>
+  </body>
+</html>
