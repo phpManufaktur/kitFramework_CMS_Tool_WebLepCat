@@ -234,7 +234,9 @@ class Setup
                 'SMTP_HOST' => CATMAILER_SMTP_HOST,
                 'SMTP_PORT' => 25,
                 'SMTP_USERNAME' => CATMAILER_SMTP_USERNAME,
-                'SMTP_PASSWORD' => CATMAILER_SMTP_PASSWORD
+                'SMTP_PASSWORD' => CATMAILER_SMTP_PASSWORD,
+                'SMTP_ENCRYPTION' => null,
+                'SMTP_AUTH_MODE' => null,
             );
         }
         else {
@@ -244,7 +246,9 @@ class Setup
                 'SMTP_HOST' => WBMAILER_SMTP_HOST,
                 'SMTP_PORT' => 25,
                 'SMTP_USERNAME' => WBMAILER_SMTP_USERNAME,
-                'SMTP_PASSWORD' => WBMAILER_SMTP_PASSWORD
+                'SMTP_PASSWORD' => WBMAILER_SMTP_PASSWORD,
+                'SMTP_ENCRYPTION' => null,
+                'SMTP_AUTH_MODE' => null,
             );
         }
         if (! file_put_contents(WB_PATH . '/kit2/config/swift.cms.json', $this->JSONFormat->format($swift_config)))
