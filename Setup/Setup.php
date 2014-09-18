@@ -351,7 +351,6 @@ class Setup
                 throw new \Exception("Can't read the CMS configuration file of the Framework!");
         }
 
-        $cms_config['CMS_PATH'] = WB_PATH;
         $cms_config['CMS_URL'] = WB_URL;
         $cms_config['CMS_MEDIA_PATH'] = WB_PATH . MEDIA_DIRECTORY;
         $cms_config['CMS_MEDIA_URL'] = WB_URL . MEDIA_DIRECTORY;
