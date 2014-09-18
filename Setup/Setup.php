@@ -357,8 +357,6 @@ class Setup
         $cms_config['CMS_MEDIA_URL'] = WB_URL . MEDIA_DIRECTORY;
         $cms_config['CMS_TEMP_PATH'] = WB_PATH . '/temp';
         $cms_config['CMS_TEMP_URL'] = WB_URL . '/temp';
-        $cms_config['CMS_ADMIN_PATH'] = ADMIN_PATH;
-        $cms_config['CMS_ADMIN_URL'] = ADMIN_URL;
         $cms_config['CMS_TYPE'] = self::$cms_type;
         $cms_config['CMS_VERSION'] = self::$cms_version;
         $cms_config['OUTPUT_FILTER']['METHOD'] = 'STANDARD';
